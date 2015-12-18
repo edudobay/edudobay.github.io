@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Compilando programas em C com o GCC</title>
+<style type="text/css">
+  body {
+    font-family: Georgia, Times, serif;
+    margin-left: 9%;
+    margin-right: 9%;
+  }
+  h1 {
+    margin-left: -6%;
+    color: #690;
+  }
+  h2 {
+    margin-left: -3%;
+    margin-top: 1.5em;
+    color: #4b6f00;
+  }
+  hr {
+    margin: 24pt 0 18pt -3%;
+    background-color: #ccc;
+    height: 3px;
+    border: none;
+  }
+  .foreword {
+    margin: 1.8em 5%;
+    font-style: italic;
+  }
+  pre.shell {
+    background-color: #ffffd6;
+    border: 1px solid #ccc;
+    padding: 8px;
+  }
+  samp.prompt {
+    color: #999999;
+  }
+  dl dt {
+    margin-top: 0.8em;
+  }
+  ol li {
+    margin-top: 0.8em;
+    margin-bottom: 0.8em;
+  }
+</style>
+</head>
+<body>
+
+<h1>Compilando programas em C com o GCC</h1>
+
+<div class="foreword">
+  <p><strong>Atenção:</strong> este artigo assume que você está usando
+  um sistema do tipo Unix (Linux, Mac OS). Se estiver no Windows, consulte a seção sobre o
+  <a href="#gccwin">uso do gcc no Windows</a> para saber o que você deve fazer
+  de diferente.</p>
+
+  <p><strong>Observação importante:</strong> o caractere <samp class="prompt">$</samp> que
+  aparece no início das linhas de comando é apenas uma ilustração do prompt que costuma aparecer
+  no terminal. Você não deve digitá-lo.  (No Windows, usamos o caractere <samp
+  class="prompt">&gt;</samp> com o mesmo significado.)</p>
+</div>
+
+<p>Com o <tt>gcc</tt> já instalado no seu sistema, é muito simples
+usá-lo para compilar programas em C. Se o programa consistir de um único
+arquivo, você pode simplesmente executar este comando no terminal:</p>
+
+<pre class="shell"><samp class="prompt" title="Isso é o prompt do interpretador de comandos; você não deve digitá-lo.">$ </samp><kbd>gcc <i>prog.c</i> -o <i>prog</i></kbd></pre>
+
+<p>onde <i>prog.c</i> é o nome do arquivo que contém o código.  Os outros dois
+parâmetros, <i>-o prog</i>, indicam o arquivo de saída do compilador &mdash; o
+arquivo executável que conterá o programa.  Você não verá nenhuma mensagem na tela se a
+compilação ocorrer sem problemas; o compilador só diz alguma coisa quando ocorrem erros.</p>
+
+<p>Você precisa especificar o nome do arquivo executável de saída pois o padrão, por razões
+históricas, é usar o arquivo <i>a.out</i>.  Em geral, usamos o mesmo nome do arquivo de código,
+tirando a extensão <i>.c</i>.  Veja que, ao contrário do Windows, o Linux não precisa da
+extensão <i>.exe</i> para reconhecer um arquivo executável; ele utiliza os atributos de
+permissão do arquivo para saber se ele é executável, dos quais o gcc já cuida
+automaticamente.</p>
+
+<p>Para executar o programa, a maneira mais &ldquo;universal&rdquo; é digitar o seguinte
+comando no terminal:</p>
+
+<pre class="shell"><samp class="prompt">$ </samp><kbd>./<i>prog</i></kbd></pre>
+
+<p>no qual os caracteres <tt>./</tt> indicam que o programa está no diretório (pasta) atual.
+É possível também configurar o shell para que não seja necessário fazer essa indicação, imitando
+o comportamento do Windows (os computadores da Pró-Aluno do IF estão configurados assim). Dessa
+maneira, você precisaria digitar apenas <samp>prog</samp> para executar o programa.</p>
+
+<p>Para mudar de pasta no terminal, use o comando <tt>cd</tt> seguido da pasta
+para onde você quer ir. Por exemplo, se você salvou seu programa na pasta
+<em>mac115</em> dentro da sua pasta pessoal, digite</p>
+
+<pre class="shell"><samp class="prompt">$ </samp><kbd>cd <i>mac115</i></kbd></pre>
+
+<p><strong>Dica:</strong> "<tt>..</tt>" (dois pontos seguidos) significa "uma
+pasta acima". Portanto, se você estivesse na pasta mac115 e quisesse voltar para
+a pasta pessoal, poderia digitar "<kbd>cd ..</kbd>". Hierarquias de pastas são
+criadas com a barra normal "<tt>/</tt>" (e não com a barra invertida, como no
+Windows).</p>
+
+
+<h2>Algumas opções úteis</h2>
+
+<p>Ao fazer seus <acronym title="Exercício-Programa">EP</acronym>s, é muito
+importante verificar erros de sintaxe ou quaisquer outros problemas no código.
+Algumas opções podem ajudá-lo a fazer isso:</p>
+
+<dl>
+  <dt><tt>-Wall</tt></dt>
+  <dd>ativa vários avisos que não são ativados normalmente.
+  Pode dar alguns conselhos úteis.</dd>
+
+  <dt><tt>-pedantic</tt></dt>
+  <dd>ativa alguns avisos que existem de acordo com o padrão
+  C mas que são desativados normalmente por extensões do gcc.</dd>
+
+  <dt><tt>-ansi</tt></dt>
+  <dd>compila seu programa estritamente de acordo com o padrão ANSI, desativando qualquer
+  extensão específica do gcc. (Como os professores costumam adotar o gcc, isso não é sempre
+  necessário. Mas preste atenção às instruções do seu professor quanto à compilação.)</dd>
+</dl>
+
+<p>O gcc pode otimizar o seu programa de modo a aumentar seu desempenho e/ou
+diminuir o tamanho do código de máquina gerado. Por omissão, o gcc não realiza
+nenhuma otimização. Há três níveis de otimização: 1, 2 e 3. Quanto maior o
+nível, maior deve ser a melhora no desempenho; mas também deve ser maior o tempo
+de compilação.</p>
+
+<p>Para ativar a otimização, use as opções <tt>-O1</tt>, <tt>-O2</tt> ou <tt>-O3</tt> (a letra
+O, não o número zero), de acordo com o nível de otimização que você desejar. Também existe a
+opção <tt>-Os</tt>, que realiza as mesmas otimizações de <tt>-O2</tt>, excetuando as que
+costumam aumentar o tamanho do executável gerado.</p>
+
+
+<h2>Programas com mais de um arquivo-fonte</h2>
+
+<p>Não é muito mais complicado compilar programas cujo código está distribuído
+em vários arquivos; inclusive, na maioria dos casos, você pode usar o mesmo
+comando que usou para compilar programas de um arquivo só, simplesmente
+adicionando mais nomes de arquivo. Mas isso tem uma desvantagem: mesmo que tiver
+feito uma pequena alteração em um único arquivo, você terá que compilar todo o
+programa novamente. (Em alguns casos, quando essa alteração afeta outros
+arquivos, pode ser de fato necessário recompilar tudo.)</p>
+
+<p>Por isso, você pode dividir a &ldquo;compilação&rdquo; em duas etapas: a compilação de
+verdade (sim, você foi enganado antes) e a <em>montagem</em>. A compilação é a
+etapa que transforma seu programa em código de máquina, e a montagem junta todos
+os pedaços necessários para fazer seu programa (incluindo algumas coisas que
+você não sabe que estão sendo incluídas mas que são necessárias para rodar um programa completo).</p>
+
+<p>Para apenas <em>compilar</em> (e não montar) um arquivo, você deve usar o
+comando</p>
+
+<pre class="shell"><samp class="prompt">$ </samp><kbd>gcc -c <i>prog.c</i></kbd></pre>
+
+<p>Note que não foi necessário especificar o nome do arquivo a ser gerado. O gcc
+criará o arquivo <i>prog.o</i> (a extensão <i>.o</i> significa <em>objeto</em>
+ou <em>programa-objeto</em>), um nome que você, geralmente, não deveria mudar.
+(Você pode, no entanto, mudá-lo, também com a opção <i>-o</i>.)</p>
+
+<p>Os vários programas-objeto devem ser montados para formar um executável. Isso
+é feito com o comando:</p>
+
+<pre class="shell"><samp class="prompt">$ </samp><kbd>gcc -o <i>monstrinho</i> <i>prog1.o</i> <i>prog2.o</i> <i>prog3.o</i> ...</kbd></pre>
+
+<p>que gerará o executável <i>monstrinho</i>.</p>
+
+<p>Assim, se você tiver um programa com três arquivos-fonte e resolver alterar o
+segundo, você pode recompilar apenas o segundo e apenas repetir a etapa de
+montagem (desde que já tenha os programas-objeto dos outros dois arquivos):</p>
+
+<pre class="shell"><samp class="prompt">$ </samp><kbd>gcc -c prog2.c</kbd>
+<samp class="prompt">$ </samp><kbd>gcc -o meuprog prog1.o prog2.o prog3.o</kbd></pre>
+
+
+<h2>Makefiles</h2>
+
+<p>À medida que seus programas vão ficando mais complexos e com mais arquivos,
+fica mais trabalhoso cuidar da recompilação de arquivos individuais,
+principalmente quando há dependência entre os arquivos e várias opções
+adicionais de linha de comando.</p>
+
+<p>Existe um utilitário muito usado, o <a
+href="http://www.gnu.org/software/make/">GNU make</a>, que facilita esse tipo
+de tarefa, permitindo que você gerencie os arquivos a serem compilados num
+arquivo chamado <tt>Makefile</tt>.</p>
+
+
+<hr>
+
+<h2 id="gccwin">GCC no Windows</h2>
+
+<p>O gcc tem uma versão para Windows que se chama <a
+  href="http://www.mingw.org/">MinGW</a>. É a mesma instalada pelo ambiente <a
+  href="http://www.bloodshed.net/devcpp.html">Dev-C++</a> ou pelo <a href="http://www.codeblocks.org/">CodeBlocks</a> (mais recomendado!).</p>
+
+<p>Se você precisar/quiser usar o gcc pela linha de comando, será necessário
+adicionar o diretório no qual ele foi instalado ao caminho de busca de executáveis.
+Isto é, o diretório <i>bin</i> dentro de onde foi instalado o Dev-C++ ou o MinGW. Geralmente,
+isso será ou <kbd>C:\Dev-Cpp\bin</kbd> ou <kbd>C:\MinGW\bin</kbd>.  Se você não souber, procure
+pelo arquivo <kbd>gcc.exe</kbd>.</p>
+
+<p>Para alterar a configuração de busca de executáveis (no Windows XP), o mais fácil é entrar no
+Painel de Controle, escolher a opção <i>Sistema</i> e seguir as instruções:</p>
+
+<ol>
+  <li>Selecione a aba <em>Avançado</em>.</li>
+  <li>Clique no botão <em>Variáveis de ambiente</em>.</li>
+  <li>Em <em>Variáveis do sistema</em>, procure pela variável <var>Path</var> e
+  clique duas vezes para editá-la.
+  <ol>
+    <li>Se não conseguir editar (se seu usuário não tiver permissão para
+      isso), procure pela variável homônima em <em>Variáveis de usuário para
+        (Seu nome)</em> e edite-a.</li>
+    <li>Se a variável de usuário <var>Path</var> não existir, crie-a clicando
+    em <em>Nova</em>.</li>
+  </ol></li>
+  <li>Adicione o diretório do gcc ao final do valor da variável. Você deve
+  separá-lo dos outros diretórios com ponto-e-vírgula (<tt>;</tt>). Claro, se
+  você tiver criado a variável, não há do que separar.</li>
+</ol>
+
+<p>A configuração será aplicada a todas as novas janelas do interpretador de
+comandos. (Se ele já estiver aberto, você terá que fechá-lo e abrir novamente.)</p>
+
+<p>Para compilar um arquivo, o comando é igual ao do Linux. A única
+diferença é na hora de executá-lo: você não precisa digitar <tt>./</tt> antes do
+nome do programa; basta digitar
+
+<pre class="shell"><samp class="prompt" title="Isso é o prompt do interpretador de comandos; você não deve digitá-lo.">&gt; </samp><kbd><i>prog</i></kbd></pre>
+
+<p>(Atenção: o caractere <samp class="prompt">&gt;</samp> não faz parte do comando que você deve digitar. Ele apenas representa o prompt que normalmente é mostrado pelo terminal.)</p>
+
+
+</body>
+</html>

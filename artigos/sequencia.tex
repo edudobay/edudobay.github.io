@@ -1,0 +1,291 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{ae}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{float,array,booktabs}
+\usepackage[hmargin=3cm,vmargin=2.5cm]{geometry}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Pri}{\mathbb{P}}
+\newcommand{\qed}{\blacksquare}
+
+\newcommand{\lema}[1]{\vskip 1.5em\noindent\textbf{Lema #1.}}
+\newcommand{\afirmacao}[1]{\vskip 1.5em\noindent\textbf{Afirmação#1.}}
+\newcommand{\teorema}[1]{\vskip 1.5em\noindent\textbf{Teorema#1.}}
+\newcommand{\corolario}{\vskip 1.5em\noindent\textbf{Corolário.}}
+\newcommand{\prova}{\noindent\textit{Demonstração}}
+\newcommand{\fimprova}{\hfill$\blacksquare$\vskip 1.5em}
+
+\begin{document}
+
+\begin{center}
+{\LARGE A seqüência de somas dos divisores de um número \par}\vskip 1em
+{\large\scshape Eduardo S. Dobay \par}\vskip 0.3em
+{31 de dezembro de 2007 \par}\vskip 1em
+\end{center}
+
+% ----------------------------------------------------------------------------------------
+% Introdução
+% ----------------------------------------------------------------------------------------
+
+\subsection*{Introdução}
+
+Todo número natural $x > 1$ pode ser decomposto em um número finito $n$ de fatores primos
+$a_i$, $1 \le i \le n$. Cada fator primo de $x$ tem uma multiplicidade $m_i$, que é o
+máximo inteiro $m$ tal que $(a_i)^m$ é divisor de $x$. Isso também pode ser representado
+como:
+
+\begin{equation}
+  x = \prod_{i=1}^{n} (a_i)^{m_i}
+\end{equation}
+
+Dados os $n$ fatores primos de $x$ e suas multiplicidades, definimos:
+
+\begin{itemize}
+  \item $N(x)$ como o número total de fatores que devem ser multiplicados para que o
+  resultado seja $x$.  Por exemplo, considerando $100 = 2 \cdot 2 \cdot 5 \cdot 5$, temos
+  $N(100) = 4$.
+
+  \item $S(x)$ como a soma de cada fator tantas vezes quantas ele aparece na decomposição
+  de $x$ em fatores primos.  Repetindo o mesmo exemplo, $S(100) = 2 + 2 + 5 + 5 = 14$.
+\end{itemize}
+
+Matematicamente, temos
+\[  
+  N(x) = \sum_{i=1}^{n} m_i
+    \qquad\qquad
+  S(x) = \sum_{i=1}^{n} a_i m_i
+\]
+
+% ----------------------------------------------------------------------------------------
+% A seqüência
+% ----------------------------------------------------------------------------------------
+
+\subsection*{A seqüência}
+
+Dado um número natural $x_0 > 1$, definimos uma seqüência $d(x_0) = (a_n)_{n\in\N}$ na
+qual cada elemento é igual à soma dos fatores do anterior, começando por $x_0$:
+%
+\[  d(x_0) = (x_0, S(x_0), S(S(x_0)), \ldots)  \text{.} \]
+%
+A partir dessa, definimos a \emph{seqüência do número de fatores relativa a $x_0$},
+$D(x_0) = (b_n)_{n\in\N}$, na qual cada elemento é a soma dos fatores do elemento
+correspondente (de mesmo índice) da seqüência acima --- ou seja, $b_n = N(a_n)$:
+%
+\[  D(x_0) = (N(x_0), N(S(x_0)), N(S(S(x_0))), \ldots)  \text{.} \]
+
+Por exemplo, a seqüência do número de fatores relativa a $x_0 = 100$ pode ser construída
+da seguinte maneira:
+
+\begin{itemize}
+  \item $100 = 2 \cdot 2 \cdot 5 \cdot 5$.  Há quatro fatores (este, 4, é o primeiro
+  número da seqüência) e a sua soma é 14.
+
+  \item Tomamos a soma obtida no passo anterior, $14 = 2 \cdot 7$.  Há dois fatores (2 é
+  o segundo elemento da seqüência), cuja soma é 9.
+
+  \item Repetimos o processo, obtendo um novo número de fatores (o próximo elemento da
+  seqüência) e uma nova soma dos fatores (que será utilizada no próximo passo).
+\end{itemize}
+
+Ao final do processo, obtemos:
+
+\renewcommand{\arraystretch}{1.1}
+\begin{table}[H]
+\centering
+\begin{tabular}{clcc} \toprule
+  $n$ &$  a_n                             $&$ S(a_n) $&$ N(a_n) = b_n $\\\midrule
+  1   &$  100 = 2 \cdot 2 \cdot 5 \cdot 5 $&   14     &    4     \\
+  2   &$   14 = 2 \cdot 7                 $&    9     &    2     \\
+  3   &$    9 = 3 \cdot 3                 $&    6     &    2     \\
+  4   &$    6 = 2 \cdot 3                 $&    5     &    2     \\
+  5   &$    5 = 5                         $&    5     &    1     \\
+  6   &$    5 = 5                         $&    5     &    1     \\
+  $\cdots$& $\cdots$                       & $\cdots$ & $\cdots$ \\\bottomrule
+\end{tabular}
+\end{table}
+
+A seqüência propriamente dita corresponde à última coluna da tabela.  Perceba que sempre
+que $n \ge 5$, temos $a_n = 5$ --- diremos, por isso, que a seqüência da soma de fatores
+$(a_n)$ converge para 5.  Da mesma maneira, a seqüência do número de fatores, $(b_n)$,
+converge para 1:
+\[  D(100) = (4, 2, 2, 2, 1, \ldots)  \]
+
+% ----------------------------------------------------------------------------------------
+% Notação
+% ----------------------------------------------------------------------------------------
+
+\subsection*{Notação}
+
+Serão também utilizadas as seguintes notações:
+
+\begin{itemize}
+  \item $\N = \{1, 2, 3, \ldots\}$, o conjunto dos números naturais.
+  \item $\Pri = \{2, 3, 5, 7, \ldots\}$, o conjunto dos números primos.
+  \item $C = \N - (\Pri \cup \{1\})$, o conjunto dos números compostos.
+\end{itemize}
+
+
+% ----------------------------------------------------------------------------------------
+% Conjectura
+% ----------------------------------------------------------------------------------------
+
+\subsection*{Conjectura}
+Será que para todo $x_0 > 1$ é verdade que $D(x_0)$ converge para 1? Ou, equivalentemente,
+será que $d(x_0)$ converge para um número primo?
+\vskip 6pt
+
+Verifica-se que \emph{não} para $x_0 = 4 = 2 \cdot 2$, pois
+\[\begin{split}
+  d(x_0) &= (4, 4, 4, \ldots) \\
+  D(x_0) &= (2, 2, 2, \ldots)  \text{ converge para } 2
+\end{split}\]
+Será que há mais algum $x_0$, tal que $d(x_0)$ não converge para 1?
+
+Veremos a seguir que \emph{não}, como conseqüência direta do seguinte teorema:
+\vskip 6pt\noindent\textbf{Teorema 1.}
+  Todo número natural $x \in C - \{4\}$ tem a seguinte propriedade $P(x)$:
+  \[  P(x) = x \in \Pri \text{ ou } P(S(x))  \]
+
+\noindent%
+A demonstração desse teorema será feita a partir de certos resultados que são enunciados e
+demonstrados a seguir.
+
+% ----------------------------------------------------------------------------------------
+% Lema 1
+% ----------------------------------------------------------------------------------------
+\lema{1} {\itshape
+  Dados $x, y \in \N$, $x > 2$ e $y \ge 2$, vale $xy > x + y$.}
+
+\prova. \begin{equation}\label{desigualdade xy}
+  xy - (x + y) = y \left( x - \frac{x}{y} - 1 \right)
+               = y \left[ x \left( 1 - \frac{1}{y} \right) - 1 \right]
+\end{equation}
+Para $y \ge 2$, tem-se \[
+  \frac{1}{y} \le \frac{1}{2} \text{ e portanto } 1 - \frac{1}{y} \ge \frac{1}{2}
+\text{.}\]
+Como $x > 2$, segue que \[
+  x \left( 1 - \frac{1}{y} \right) > 1
+\]
+Substituindo na equação \eqref{desigualdade xy}, vê-se diretamente que
+$xy - (x + y) > 0$, que equivale à desigualdade procurada.
+\fimprova
+
+% ----------------------------------------------------------------------------------------
+% Lema 2
+% ----------------------------------------------------------------------------------------
+\lema{2} {\itshape
+  Dado um conjunto de $n$ números naturais $a_1, \ldots, a_n$, todos maiores que
+  2, vale
+  \[ \sum_{i=1}^{n} a_i < \prod_{i=1}^{n} a_i \text{.} \]}%
+\prova.  Vamos usar indução sobre $n$. O caso $n = 2$ corresponde ao Lema 1; agora seja
+  $n > 2$.  Pela hipótese de indução,
+    \[  a_1 + a_2 + \cdots + a_{n-1}  <  a_1 a_2 \cdots a_{n-1}  \text{.} \]
+  Pela desigualdade do Lema 1,
+    \[  (a_1 + a_2 + \cdots + a_{n-1}) + a_n  <  (a_1 + a_2 + \cdots + a_{n-1}) a_n  \text{.} \]
+  Utilizando a hipótese de indução,
+    \[  (a_1 + a_2 + \cdots + a_{n-1}) a_n  <  (a_1 a_2 \cdots a_{n-1}) a_n  \text{.} \]
+  Reunindo essas duas igualdades, temos
+    \[  (a_1 + a_2 + \cdots + a_{n-1}) + a_n  <  (a_1 a_2 \cdots a_{n-1}) a_n  \text{,} \]
+  como queríamos demonstrar.
+\fimprova
+
+% ----------------------------------------------------------------------------------------
+% Lema 3
+% ----------------------------------------------------------------------------------------
+\lema{3} {\itshape
+  Dado qualquer número natural $m > 2$, tem-se \[2^m > 2m \text{.}\]}%
+\prova, por indução em $m$.  Para $m = 3$, a desigualdade é imediata:
+  $2^3 = 8 > 6 = 2 \cdot 3$.  Agora seja $m > 3$.  Por hipótese, tem-se
+  $2^{m-1} > 2(m - 1)$.  Assim,
+    \[  2^{m-1} \cdot 2 = 2^m > 2(m - 1) \cdot 2 = 4m - 4 = 2m + 2(m - 2)  \]
+  Como $m > 2$, tem-se $2(m - 2) > 0$, e portanto
+    \[  2^m > 2m \text{,}  \]
+  como queríamos demonstrar.
+\fimprova
+
+Uma forma ``fraca'' desse lema é a seguinte: para $m \in \N$, tem-se
+  \[  2^m \ge 2m  \text{.}  \]
+A verificação é imediata para $m = 1$ e $m = 2$.
+
+% ----------------------------------------------------------------------------------------
+% Afirmação 1
+% ----------------------------------------------------------------------------------------
+\afirmacao{ 1} Dados $m, n \in \N$ e uma seqüência de $n$ números naturais $a_i$, $1 \le i
+\le n$, com $a_i > 2$, vale
+  \[  2^m \prod_{i=1}^{n} a_i  >  2m + \sum_{i=1}^{n} a_i  \text{.}  \]
+\prova.
+  Pelo Lema 1, tem-se
+    \[  \underbrace{2^m}_{\ge 2} \underbrace{(a_1 a_2 \cdots a_n)}_{> 2}
+        > 2^m + (a_1 a_2 \cdots a_n)  \text{.}  \]
+  Pelo Lema 2, tem-se
+    \[  2^m + (a_1 a_2 \cdots a_n)  >  2^m + (a_1 + a_2 + \cdots + a_n)  \text{.}  \]
+  Pela forma fraca do Lema 3, tem-se
+    \[  2^m + (a_1 + a_2 + \cdots + a_n)  \ge  2m + (a_1 + a_2 + \cdots + a_n)  \text{.}  \]
+  Reunindo essas três desigualdades, tem-se, como queríamos demonstrar,
+    \[  2^m a_1 a_2 \cdots a_n  >  2m + a_1 + a_2 + \cdots + a_n  \text{.}  \]
+\fimprova
+
+% ----------------------------------------------------------------------------------------
+% Afirmação 2
+% ----------------------------------------------------------------------------------------
+\afirmacao{ 2} Dados $n \in \N$, uma seqüência de $n$ números naturais $a_i$, $1 \le i \le
+n$, com $a_i > 2$, e uma seqüência de expoentes naturais $m_i$, $0 \le i \le n$, vale
+  \[  2^{m_0} a_1^{m_1} \cdots a_n^{m_n}  >  2 m_0 + a_1 m_1 + \ldots a_n m_n  \text{.} \]
+\prova.
+  Podemos tomar uma seqüência $(b_1, \ldots, b_N)$, com
+    \[  N = \sum_{i=1}^{n} m_i  \]
+  e estabelecer uma relação entre as seqüências $(a_i)$ e $(b_i)$:  \begin{align*}
+    &b_1 = \cdots = b_{m_1} = a_1  \\
+    &b_{m_1 + 1} = \cdots = b_{m_1 + m_2} = a_2  \\
+    &\vdots  \\
+    &b_{m_1 + \cdots + m_{n-1} + 1} = \cdots = b_{m_1 + \cdots + m_n} = a_n
+  \end{align*}
+  Dessa maneira, temos  \begin{align*}
+    a_1^{m_1} \cdots a_n^{m_n} &= b_1 \cdots b_N  \\
+    a_1 m_1 + \cdots + a_n m_n &= b_1 + \cdots + b_N
+  \end{align*}
+  e, pela Afirmação 1,
+    \[  2^{m_0} b_1 \cdots b_N  >  2m_0 + b_1 + \cdots + b_N  \text{,}  \]
+  que equivale à desigualdade que queríamos demonstrar.
+
+\corolario{} Dado um número natural $x \in C - \{4\}$, tem-se $S(x) < x$.  \par
+  De fato, qualquer número composto pode ser escrito como um produto de $N$ fatores primos
+  distintos, elevados a expoentes naturais.  Se tomarmos como $(a_1, \ldots, a_n)$ os
+  fatores primos diferentes de 2, $(m_1, \ldots, m_n)$ as suas respectivas multiplicidades,
+  e $m_0$ a multiplicidade do fator 2, $x$ e $S(x)$ podem ser escritos como
+  \begin{align*}
+       x &= 2^{m_0} a_1^{m_1} \cdots a_n^{m_n} \\
+    S(x) &= 2m_0 + a_1 m_1 + \cdots + a_n m_n
+  \end{align*}
+  Se tivermos $m_0 \ge 1$ e $n \ge 1$, temos $S(x) < x$ pela Afirmação 2.  Se tivermos $m_0
+  = 0$, $S(x) < x$ pelo Lema 2.  Se tivermos $n = 0$, $S(x) < x$ pelo Lema 3 (pois $m_0 >
+  2$ na hipótese de que x é composto e diferente de 4).
+
+%\noindent%
+É de imediata verificação que, para todo $y \in \Pri \cup \{4\}$, tem-se $S(x) = x$.
+\fimprova
+
+% ----------------------------------------------------------------------------------------
+% Teorema (Dobay)
+% ----------------------------------------------------------------------------------------
+\teorema{ 1} Todo número natural $x \in C - \{4\}$ tem a seguinte propriedade
+$P(x)$:
+\[  P(x) = x \in \Pri \text{ ou } P(S(x))  \]
+
+\prova.
+Seja $x_0 > 4$ (é imediato que a propriedade vale para $x_0 = 2$ e $x_0 = 3$). Como a
+soma de fatores primos de qualquer número é maior que 1, a seqüência $d(x_0) = (a_n)$ está
+bem definida para todo $n \in \N$, de maneira que $a_{n+1} = S(a_n)$.
+
+Já provamos que, para todo $x$ diferente de 4 e composto, $S(x) < x$.  Supondo, por
+absurdo, que a seqüência $(a_n)$ acima não contém nenhum número primo nem igual a
+4, temos que $a_{n+1} = S(a_n) < a_{n}$ para todo $n > 0$ --- ou seja, a seqüência é
+estritamente decrescente.  Portanto, existe, para qualquer número natural $k$, algum $i$
+tal que $a_i < k$; em particular, existe $i$ tal que $a_i < 2$.  Isso é um absurdo, pois
+$a_i$ é a soma dos fatores primos de um outro número natural; logo, a suposição de que
+$(a_n)$ não contém números primos ou 4 é falsa, o que prova o teorema.
+
+
+
+\end{document}

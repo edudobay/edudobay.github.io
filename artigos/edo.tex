@@ -1,0 +1,994 @@
+\documentclass[12pt,a4paper,oneside]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{ae}
+
+\usepackage[hmargin=3.0cm,top=2.1cm,bottom=2.0cm]{geometry}
+\usepackage{url}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{pict2e}
+\usepackage{tikz}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{ifthen}
+\usepackage{suffix}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\WronskianMatrix}{\mathbb{W}}
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\senh}{senh}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\cof}{cof}
+
+\usetikzlibrary{shapes.misc}
+\tikzstyle{secnum} = [fill=black, circle, inner sep=2pt]
+\tikzstyle{secsqnum} = [fill=black, rounded rectangle, minimum size=36pt, inner sep=5pt]
+
+\newcommand{\circlenumber}[1]{%
+  \begin{tikzpicture}[baseline=0pt]%
+    \node[name=s, secsqnum, anchor=base] at (0,0) {#1};
+  \end{tikzpicture}}
+
+\newlength{\chaprulewidth}
+\newlength{\chaprulelmargin}
+\setlength{\chaprulelmargin}{18pt}
+
+\makechapterstyle{rounded}{%
+%% Commands for numbered chapters
+%
+  \renewcommand*{\printchaptername}{}%
+  \renewcommand*{\chapnumfont}{\huge\sffamily\bfseries}%
+  \renewcommand*{\printchapternum}{%
+    \chapnumfont%
+    {%
+      \color{white}%
+      \protect\raisebox{0pt}[0pt][0pt]{\protect\circlenumber{\thechapter}}%
+    }%
+    {%
+      \setlength{\chaprulewidth}{\textwidth}%
+      \addtolength{\chaprulewidth}{-\chaprulelmargin}%
+      \hspace{-\chaprulelmargin}%
+      \protect\raisebox{-9.2pt}[0pt][0pt]{%
+        \rule[0pt]{\chaprulewidth}{0.4pt}%
+      }\hspace{-\chaprulewidth}\hspace{18pt}%
+    }%
+  }%
+  \renewcommand*{\afterchapternum}{\ }%
+%
+%% Commands for unnumbered chapters
+%
+  \renewcommand*{\printchapternonum}{%
+    \rule[-9pt]{\textwidth}{0.4pt}%
+    \hspace{-\textwidth}%
+  }
+%
+  \renewcommand*{\clearforchapter}{}% no page break
+  \renewcommand*{\chaptitlefont}{\Large\bfseries\sffamily}%
+  \renewcommand*{\printchaptertitle}[1]{\chaptitlefont ##1}%
+  \setlength{\beforechapskip}{24pt}%
+  \setlength{\afterchapskip}{12pt}%
+  %\aliaspagestyle{chapter}{companion}%
+}
+
+\chapterstyle{rounded}
+
+%%- Section styles
+%
+\newcommand{\sectitlefont}{\large\bfseries\sffamily}
+\newcommand{\ruledsec}[1]{%
+  \noindent\sectitlefont\raggedright #1\par\nobreak%
+  \rule[1em]{\textwidth}{0.4pt}\par\nobreak\vspace{-1em}}
+\setsecheadstyle{\ruledsec}
+\setsechook{\setsecnumformat{$\blacksquare$ \csname the##1\endcsname\quad}}
+\setaftersecskip{1.5ex}
+
+%%- TOC styles
+%
+\renewcommand{\printtocnonum}{%
+  \rule[-6pt]{\textwidth}{0.4pt}%
+  \hspace{-\textwidth}}
+\renewcommand{\printtoctitle}{\sectitlefont}
+\renewcommand{\tocheadstart}{\vspace*{10pt}}
+\renewcommand{\aftertoctitle}{\par\nobreak}
+
+%%- Page styles (header/footer)
+%
+\pagestyle{companion}
+
+%%-
+
+\title{Equações diferenciais lineares}
+\author{Eduardo S. Dobay}
+\date{14 de julho de 2010}
+
+\makeatletter
+\renewcommand{\maketitle}{
+  \begin{center}
+    {\Large\bfseries\@title\par\medskip}
+    {\large\scshape
+    \begin{tabular}[t]{c}%
+    \@author
+    \end{tabular}\par\medskip}
+    {\itshape\@date\par}
+  \end{center}}
+\makeatother
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+{\color[rgb]{0.45 0.45 0.5}
+\tableofcontents*}
+
+
+\setlength{\parskip}{3pt}
+
+% ############################################################################
+\chapter{Equações de primeira ordem}
+
+Uma \emph{equação diferencial ordinária de primeira ordem} é uma relação do tipo
+\begin{equation}
+  F \big(t, y(t), y'(t) \big) = 0 \text,
+\end{equation}
+da qual se busca determinar a função $y : I \to \C$, diferenciável, definida num certo intervalo $I \subset \R$.  A equação diz-se \emph{ordinária} pois a função procurada é uma função de uma variável apenas, e de \emph{primeira ordem} pois não aparecem na equação derivadas de $y$ de ordem superior à primeira.
+
+Vamos trabalhar com um tipo bastante especial de equação diferencial: as equações diferenciais \emph{lineares}, ou seja, aquelas em que só aparecem termos com $y$ e $y'$ elevadas à primeira potência, sem produtos entre elas.  Equações desse tipo podem ser escritas na forma
+\begin{equation}
+\label{edo1-funcao}
+  y'(t) - p(t) y(t) = f(t) \text,
+\end{equation}
+sendo $p(t)$ e $f(t)$ funções conhecidas, definidas no intervalo $I$.  Exigimos de $p$ e $f$, a princípio, apenas que sejam integráveis.
+
+% ----------------------------------------------------------------------------
+
+\section{Equações homogêneas}
+
+Vamos primeiro estudar o caso em que $f(t) = 0$, ou seja, a equação diferencial reduz-se a
+\begin{equation}
+\label{edo1h-funcao}
+  y'(t) - p(t) y(t) = 0 \text.
+\end{equation}
+Nesse caso, quando a equação diferencial não envolve termos que não contenham $y$ ou sua derivada, dizemos que a equação é \textbf{homogênea}.  Esse caso é de particular importância pois, nessas condições, combinações lineares de soluções da equação são também soluções: se $y_1(t)$ e $y_2(t)$ satisfazem a equação e $c_1$ e $c_2$ são constantes, então $y(t) = c_1 y_1(t) + c_2 y_2(t)$ também satisfaz a equação, devido à linearidade da derivada.  Esse fato também é conhecido como \textbf{princípio de superposição}.
+
+Denotemos por $D$ o operador que associa a uma função (diferenciável) a sua derivada: $(Df)(x) = f'(x)$.%
+  \footnote{Para ser mais preciso: o operador $D$ associa a uma função $f$ uma função $Df$ que coincide com a derivada $f'$ de $f$.  A notação $(Df)(x)$ indica que estamos tomando a função $Df$ que resulta da aplicação de $D$ à função $f$ e calculando-a no ponto $x$.}
+Se definirmos o operador diferencial $L = D - p(t)$, agindo sobre um espaço $V$ de funções $y(t)$, diferenciáveis no intervalo $I$, da seguinte maneira:
+\[
+  (Ly)(t) = y'(t) - p(t) y(t)
+\]
+a equação diferencial equivale à simples expressão $Ly = 0$.  Observe que o operador $L$ é linear e que o conjunto de soluções da equação nada mais é que o \emph{núcleo} desse operador.  Isso, por si só, diz que o conjunto de soluções constitui um espaço vetorial (mais especificamente, um subespaço de $V$) e que, portanto, toda combinação linear de soluções é também solução.
+
+Para buscar soluções da equação, vamos definir $P(t) = \int p(t)\,dt$ como uma primitiva da função $p$.  Observe que, dessa forma, a função $g(t) = e^{-P(t)}$ tem como derivada $g'(t) = -P'(t) e^{-P(t)} = -p(t) g(t)$.  Multiplicando \eqref{edo1h-funcao} por $g(t)$ (o que é possível pois $g$ é uma função exponencial e, portanto, não se anula), teremos
+\begin{gather*}
+  y'(t) g(t) - y(t) p(t) g(t) = 0 \\
+  y'(t) g(t) + y(t) g'(t) = 0 \\
+  \left( y(t) g(t) \right)' = 0
+\end{gather*}
+A função $g(t)$ é chamada de \emph{fator integrante}, pois permite que transformemos a equação numa derivada perfeita e assim possamos simplesmente integrá-la.  Daqui concluímos que $y(t) g(t)$ deve ser igual a uma constante $C$, e portanto $y(t) = C/g(t)$, ou seja,
+\begin{equation}
+  y(t) = C e^{P(t)}
+\end{equation}
+
+Note que há duas indeterminações nessa expressão: a constante $C$ e a primitiva $P(t)$ de $p$.  Lembre-se de que uma função tem infinitas primitivas --- se $P(t)$ é uma primitiva, então $\tilde{P}(t) = P(t) + k$, também é, qualquer que seja a constante $k$.  Observe, no entanto, que a constante $k$ pode ser absorvida à constante $C$:
+\[
+  C e^{P(t)}
+  = C e^{\tilde{P}(t) - k}
+  = C e^{\tilde{P}(t)} e^{-k}
+  = (C e^{-k}) e^{\tilde{P}(t)}
+  = \tilde{C} e^{\tilde{P}(t)}
+\]
+Então, na verdade, essas duas indeterminações são uma só.  Podemos, por exemplo, escolher a primitiva que se anula em um certo instante $t_0 \in I$, de modo que $y(t_0) = C e^{P(t_0)} = C$.  Essa escolha é conveniente se desejarmos resolver a equação com uma condição do tipo $y(t_0) = y_0$, que dessa forma se traduz na solução
+\begin{equation}
+  y(t) = y_0 \exp\left( \int_{t_0}^{t} p(t')\,dt' \right)  \text.
+\end{equation}
+
+Note que, independentemente da primitiva escolhida, todas as soluções da equação diferencial são múltiplas umas das outras, ou seja, o espaço de soluções tem dimensão 1.  Assim, uma solução qualquer pode ser escrita como um múltiplo $y(t) = c_1 y_1(t)$ da função $y_1(t) = \exp \left( \int p(t)\,dt \right)$.  Isso equivale a dizer que $y_1$ constitui, sozinha, uma base do espaço de soluções.
+
+Repare também que, quando $p(t)$ é constante, $p(t) = \lambda$, a primitiva de $p(t)$ que se anula em $t_0$ é simplesmente $P(t) = \lambda(t - t_0)$.  Portanto, as soluções de $y' - \lambda y = 0$ podem ser escritas como $y(t) = y_0 e^{\lambda(t - t_0)}$, ou seja, são sempre múltiplas de $y_1(t) = e^{\lambda t}$.
+
+% ----------------------------------------------------------------------------
+
+\section{Equações inomogêneas}
+
+Uma maneira simples de resolver a equação $Ly = f$, para $f \neq 0$, é totalmente análoga ao que foi feito para o caso homogêneo: multiplicamos a equação \eqref{edo1-funcao}, \[
+  y'(t) - p(t) y(t) = f(t) \text, \]
+pelo fator integrante $g(t) = e^{-P(t)}$, sendo $P(t)$ uma primitiva de $p(t)$, e chegamos à equação
+\[
+  \left( y(t) e^{-P(t)} \right)' = e^{-P(t)} f(t)
+\]
+Integrando os dois lados da equação, obtemos
+\[
+  y(t) e^{-P(t)} = \int_{t_0}^{t} e^{-P(s)} f(s)\,ds + C \text,
+\]
+e a solução pode ser escrita como
+\begin{equation}
+\label{edo1i-sol}
+  y(t) = C e^{P(t)} + e^{P(t)} \int_{t_0}^{t} e^{-P(s)} f(s)\,ds
+\end{equation}
+
+Note que o primeiro termo da solução (vamos denominá-lo $y_h(t)$) corresponde à solução geral da equação homogênea $Ly = 0$.  Portanto, se considerarmos o segundo termo, $y_i(t) = y(t) - y_h(t)$, teremos $L y_i = L(y - y_h) = Ly - Ly_h = f - 0 = f$, ou seja, o segundo termo sozinho também é solução da equação inomogênea.  Em outras palavras, somando uma solução qualquer da equação homogênea a uma solução da equação inomogênea, caímos novamente numa solução da equação inomogênea.  Mais adiante, quando olharmos para as equações de 2ª ordem, veremos com mais detalhes a importância desse fato.
+
+Observe também que o fator $e^{P(t)}$ pode entrar na integral do segundo termo em \eqref{edo1i-sol}, e portanto ficamos com um fator $e^{P(t) - P(s)}$ dentro da integral.  Esse fator não depende da particular primitiva de $p$ que escolhemos, já que a diferença $P(t) - P(s)$ nada mais é que a integral definida de $p(t)$ de $s$ a $t$, de acordo com o Teorema Fundamental do Cálculo.  Assim, o termo $y_i(t)$ independe da primitiva escolhida; ele só depende do extremo que adotamos na integral que é explicitada em \eqref{edo1i-sol}.
+
+Vale lembrar também, como no caso das equações homogêneas, que, caso $p(t)$ seja constante ($p(t) = \lambda$), a primitiva de $p(t)$ que se anula em $t_0$ é simplesmente $P(t) = \lambda(t - t_0)$, e a solução da equação inomogênea pode ser escrita como
+\begin{equation}
+\label{edo1ic-sol}
+  y(t) = C e^{\lambda t} + e^{\lambda t} \int_{t_0}^{t} e^{-\lambda s} f(s)\,ds
+\end{equation}
+
+% ############################################################################
+\chapter{Equações de segunda ordem}
+
+Consideremos um operador $L = D^2 + p(t) D + q(t)$ definido num certo espaço $V$ de funções $u : I \to \C$ duas vezes diferenciáveis, sendo $I \subset \R$ um intervalo.  $p(t)$ e $q(t)$ são funções (conhecidas) definidas nesse mesmo intervalo, e das quais não precisamos exigir muita coisa.
+
+Consideraremos primeiramente \emph{equações diferenciais lineares homogêneas de 2ª ordem}, do tipo $Ly = 0$, para uma função $y = y(t)$, que podem ser escritas mais explicitamente na forma
+\begin{equation}
+  \label{edo2-funcao}
+    \ddot{y}(t) + p(t) \dot{y}(t) + q(t) y(t) = 0
+  \text.
+\end{equation}
+Uma solução dessa equação é uma função $y(t)$, definida no intervalo $I$, que satisfaça essa igualdade.  Observe que o operador $L$, da mesma maneira que o operador $L$ definido para equações de primeira ordem, é linear e, portanto, as soluções da equação constituem um subespaço vetorial de $V$, ou seja, continua valendo o princípio de superposição.
+
+É um fato bem conhecido (e cuja demonstração não vem ao caso) que esse espaço tem dimensão 2.  Isso significa que uma solução qualquer da equação $Ly = 0$ pode ser escrita em termos de duas funções linearmente independentes $y_1$ e $y_2$: $y(t) = c_1 y_1(t) + c_2 y_2(t)$.  Essa é dita a \textbf{solução geral} da equação.  Veja que ela não determina uma única função, mas sim uma família de funções, com dois parâmetros ``livres'' $c_1$ e $c_2$.
+
+Frequentemente estamos interessados não na solução geral, mas em uma solução específica, que não dependa desses parâmetros, como é o caso das equações de movimento da mecânica clássica.  Imagine um caso simples: uma bola é lançada verticalmente no instante $t_0$ e queremos determinar sua trajetória subsequente, ou seja, uma função do tempo, $y(t)$, que representa a posição da bola em cada instante.  A trajetória é caracterizada por três fatores: a equação de movimento da bola (que traduz as forças que estão sendo aplicadas), e sua posição $y(t_0)$ e velocidade $\dot{y}(t_0)$ iniciais --- essas duas são as \textbf{condições iniciais} do problema.
+
+Apenas a equação de movimento (no caso da bola que cai sob a aceleração da gravidade, $g$, a equação de movimento seria $\ddot{y}(t) = g$) não é suficiente para caracterizar completamente o movimento da bola.  Todas as bolas lançadas verticalmente de qualquer altura, com qualquer velocidade inicial, têm essa mesma equação de movimento; a solução geral da equação de movimento contém todas as trajetórias possíveis para qualquer condição inicial.  Para obter a trajetória da nossa bola específica, precisamos impor as condições iniciais sobre a solução geral.
+
+Em geral, as condições iniciais são vínculos sobre a função e/ou suas derivadas em um ponto $t_0$, e o fato de usarmos a palavra \emph{inicial} sugere fortemente que a região de interesse para a solução seja o conjunto dos instantes $t > t_0$.  Isso não nos impede de encontrar a solução para $t < t_0$: poderíamos, no exemplo anterior do lançamento da bola, ter dado o instante em que a bola cai no chão (adotando o chão como $y = 0$) e a velocidade com que isso ocorre, e a partir daí encontrar o movimento anterior da bola.
+
+Outro tipo de vínculo que se pode usar são as chamadas \textbf{condições de contorno} ou de \textbf{fronteira}, que se referem a vínculos em dois pontos --- em boa parte dos casos, estamos interessados na solução num intervalo $[a, b]$ e desejamos fixar a solução nos pontos $a$ e $b$, que são a \emph{fronteira} do intervalo.  Por exemplo, poderíamos especificar a altura da qual a bola parte no instante $t_0$ e a velocidade com que ela cai no chão no instante $t_1$, ainda na mesma situação do exemplo anterior, e a partir desses dados também é possível determinar a trajetória da bola entre o lançamento e a colisão com o chão.
+
+Em qualquer um desses casos, para determinar \emph{uma} solução do problema, precisamos de duas condições sobre a função e sua primeira derivada para definir os dois parâmetros $c_1$ e $c_2$.  Vimos que uma maneira de fazer isso é fornecer o valor da função e de sua primeira derivada num certo ponto $t_0$, ou seja, as \emph{condições iniciais}:
+\begin{equation}
+  \begin{aligned}
+          y(t_0) &= y_0 \\
+    \dot{y}(t_0) &= v_0
+  \end{aligned}
+\end{equation}
+%
+Veja que isso realmente nos dá uma solução única para o problema.  Impondo essas duas condições sobre a solução geral $y(t) = c_1 y_1(t) + c_2 y_2(t)$, temos
+\begin{equation}
+  \begin{aligned}
+    c_1 y_1(t_0)       + c_2 y_2(t_0)       &= y_0 \\
+    c_1 \dot{y}_1(t_0) + c_2 \dot{y}_2(t_0) &= v_0
+  \end{aligned}
+\end{equation}
+ou, em forma matricial,
+\begin{equation}
+  \begin{bmatrix}
+          y_1(t_0)  &       y_2(t_0)  \\
+    \dot{y}_1(t_0)  & \dot{y}_2(t_0)
+  \end{bmatrix}
+  \begin{bmatrix}
+    c_1 \\
+    c_2
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    y_0 \\
+    v_0
+  \end{bmatrix}
+\end{equation}
+%
+Como $y_1$ e $y_2$ são linearmente independentes, as colunas da matriz do lado esquerdo são linearmente independentes, o que significa que a matriz pode ser invertida, dando uma solução única para $c_1$ e $c_2$.
+
+O determinante dessa matriz é chamado \textbf{wronskiano} do conjunto das duas funções $\{y_1, y_2\}$ no ponto $t_0$, e denotado $W(t_0) = y_1(t_0) \dot{y}_2(t_0) - \dot{y}_1(t_0) y_2(t_0)$.  A matriz em si é denominada matriz wronskiana, e denotada $\WronskianMatrix(t_0)$.  Assim, invertendo a matriz, podemos escrever explicitamente quem são $c_1$ e $c_2$:
+\begin{equation}
+\label{c1c2}
+  \begin{bmatrix}
+    c_1 \\
+    c_2
+  \end{bmatrix}
+  =
+  \frac{1}{W(t_0)}
+  \begin{bmatrix}
+    \dot{y}_2(t_0)  &      -y_2(t_0)  \\
+   -\dot{y}_1(t_0)  &       y_1(t_0)
+  \end{bmatrix}
+  \begin{bmatrix}
+    y_0 \\
+    v_0
+  \end{bmatrix}
+\end{equation}
+
+% ----------------------------------------------------------------------------
+
+\section{Mais sobre equações homogêneas}
+
+Vamos agora construir uma propriedade bastante interessante do wronskiano.  Para isso, vamos calcular sua derivada $W'(t)$:
+\begin{align}
+\label{wronskiano}
+  W(t) &=
+    y_1(t) \dot{y}_2(t) - \dot{y}_1(t) y_2(t) \\
+  W'(t) &=
+    y_1(t) \ddot{y}_2(t) - \ddot{y}_1(t) y_2(t) +
+    \dot{y}_1(t) \dot{y}_2(t) - \dot{y}_1(t) \dot{y}_2(t) \nonumber\\
+  W'(t) &=
+    y_1(t) \ddot{y}_2(t) - \ddot{y}_1(t) y_2(t)
+\end{align}
+
+Substituindo as segundas derivadas de acordo com a equação diferencial satisfeita por $y_1$ e $y_2$, teremos
+\begin{align*}
+  W'(t) &=
+    y_2(t) [p(t) \dot{y}_1(t) + q(t) y_1(t)] - y_1(t) [p(t) \dot{y}_2(t) + q(t) y_2(t)] \\
+  &=
+    p(t) \left[ \dot{y}_1(t) y_2(t) - y_1(t) \dot{y}_2(t) \right]
+\end{align*}
+Identificando o termo entre colchetes como $-W(t)$, temos que $W$ satisfaz a equação diferencial
+\begin{equation}
+  W'(t) = -p(t) W(t) \text,
+\end{equation}
+cuja solução será
+\begin{equation}
+  W(t) = W(t_0) \exp \left( -\int_{t_0}^{t} p(t')\,dt' \right) \text.
+\end{equation}
+%
+Essa expressão nos permite determinar o wronskiano diretamente a partir da equação diferencial, sem conhecer suas soluções.  Uma das utilidades disso é encontrar uma segunda solução da equação diferencial quando já conhecemos uma das soluções:  se $W(t)$ e $y_1(t)$ são conhecidos, \eqref{wronskiano} é uma equação diferencial linear de 1ª ordem para $y_2(t)$, que pode ser resolvida diretamente.
+
+% ----------------------------------------------------------------------------
+
+
+% ...
+
+% XXX
+%Vamos deixar isso um pouco de lado por enquanto.  Vamos ver o que acontece quando o lado direito da equação $Ly = 0$ deixa de ser zero.
+
+% ----------------------------------------------------------------------------
+
+\section{Equações inomogêneas}
+
+Estudaremos agora as soluções da equação $Ly = f$, na qual $L$ é o mesmo operador diferencial $L = D^2 + p(t) D + q(t)$ e $f(t)$ é outra função já conhecida.  Nesse caso dizemos que a equação é \emph{inomogênea} pois o lado direito da equação não é mais zero.  Equações inomogêneas aparecem, por exemplo, quando um oscilador harmônico é forçado por uma força externa dependende do tempo, como um motor que faz a mola oscilar numa certa frequência.  Ou, num caso mais simples, quando o oscilador está na vertical e portanto sob a ação da força constante da gravidade que aponta para baixo, na mesma direção do movimento da mola.
+
+Certamente deve continuar havendo uma família de soluções $y(t)$ para o problema $Ly = f$, pois, se pensarmos em um sistema físico, a trajetória deve depender de algum modo da condição inicial.  No entanto, a função $f$ atrapalha um pouco as coisas: perdemos o princípio de superposição; as soluções não formam mais um espaço vetorial.  Devemos olhar agora para outra coisa: a \emph{diferença} entre duas soluções.
+
+Sejam $y_a$ e $y_b$ duas soluções quaisquer da equação $Ly = f$.  Como o operador $L$ é linear, temos
+\[
+  L(y_a - y_b) = Ly_a - Ly_b = f - f = 0
+\]
+e portanto as duas soluções diferem por uma função que é solução do problema homogêneo associado.  Ou seja, se conhecemos todos os elementos do espaço solução do problema homogêneo e uma solução particular (mas qualquer) do problema inomogêneo, podemos fabricar todas as soluções do problema inomogêneo.
+
+Em suma, se conhecermos uma solução particular $y_p$ de $Ly = f$ e a base $\{y_1, y_2\}$ do espaço solução de $Ly = 0$, a solução geral de $Ly = f$ será dada por
+\begin{equation}
+  y(t) = y_p(t) + c_1 y_1(t) + c_2 y_2(t)
+\end{equation}
+
+Agora nosso problema fica reduzido a achar \emph{uma} solução qualquer de $Ly = f$.  Em alguns casos, dependendo das funções $p$ e $q$ e da forma de $f$, pode haver algumas técnicas simples para isso: em alguns casos é possível ``chutar'' um tipo de solução com coeficientes indeterminados e encontrar os coeficientes apropriados substituindo o chute na equação (isso é conhecido às vezes como \emph{método dos coeficientes indeterminados}); em casos bem especiais, podemos fazer uma mudança de variável de modo a deixar a equação homogênea novamente.
+
+
+Embora muitos dos casos que aparecem na prática possam ser resolvidos por técnicas bastante simples, há um método bem geral para achar uma solução particular.  É o \textbf{método da variação dos parâmetros} (ou \emph{método da variação das constantes}), que consiste em supor que a solução particular possa ser escrita na forma
+\begin{equation}
+  y_p(t) = u_1(t) y_1(t) + u_2(t) y_2(t) \text,
+\end{equation}
+ou seja, como se fosse uma solução da equação homogênea, com as constantes $c_1$ e $c_2$ trocadas por funções $u_1(t)$ e $u_2(t)$.  Essa condição não é muito restritiva, já que as funções $u_1$ e $u_2$ são, a princípio arbitrárias.  Vamos substituir $y_p$ na equação diferencial $Ly_p = f$, ou, explicitamente,
+\begin{equation}
+  \ddot{y}_p(t) + p(t) \dot{y}_p(t) + q(t) y_p(t) = f(t)
+  \text,
+\end{equation}
+para descobrir que condições essas funções $u_1$ e $u_2$ devem satisfazer.  Calculemos primeiro as derivadas de $y_p$:
+%
+\begin{align}
+  y_p &=
+    u_1 y_1 + u_2 y_2 \\
+%
+\label{mvp-dyp}
+  \dot{y}_p &=
+    u_1 \dot{y}_1 + u_2 \dot{y}_2 + \dot{u}_1 y_1 + \dot{u}_2 y_2 \\
+%
+  \ddot{y}_p &=
+    u_1 \ddot{y}_1 + u_2 \ddot{y}_2 +
+    \dot{u}_1 \dot{y}_1 + \dot{u}_2 \dot{y}_2 +
+    (\dot{u}_1 y_1 + \dot{u}_2 y_2)'
+\end{align}
+%
+Reagrupando alguns termos para calcular $L y_p = \ddot{y}_p + p \dot{y}_p + q y_p$, obtemos
+%
+\begin{equation}
+\begin{aligned}
+  \ddot{y}_p + p \dot{y}_p + q y_p &=
+    u_1 \underbrace{(\ddot{y}_1 + p \dot{y}_1 + q y_1)}_{=\:0} +
+    u_2 \underbrace{(\ddot{y}_2 + p \dot{y}_2 + q y_2)}_{=\:0} + \\
+    & \quad+
+    p (\dot{u}_1 y_1 + \dot{u}_2 y_2) +
+    (\dot{u}_1 y_1 + \dot{u}_2 y_2)' + \\
+    & \quad+
+    \dot{u}_1 \dot{y}_1 + \dot{u}_2 \dot{y}_2
+\end{aligned}
+\end{equation}
+Os dois termos destacados se anulam pois $y_1$ e $y_2$ são soluções da equação homogênea.  Em virtude da equação diferencial, o lado direito deve ser igual a $f$:
+\begin{equation}
+\label{mvp-Lyp}
+  p (\dot{u}_1 y_1 + \dot{u}_2 y_2) +
+  (\dot{u}_1 y_1 + \dot{u}_2 y_2)' + 
+  \dot{u}_1 \dot{y}_1 + \dot{u}_2 \dot{y}_2
+  = f
+\end{equation}
+Note que temos duas incógnitas $u_1$ e $u_2$, mas nosso único vínculo, a equação diferencial, só nos dá uma equação nessas incógnitas.  Para determinar $u_1$ e $u_2$ unicamente, precisamos de um outro vínculo.  Veja que \eqref{mvp-Lyp} nos tenta a fazer uma escolha muito conveniente: anular o termo entre parênteses que aparece duas vezes na equação.  Essa é uma escolha arbitrária que, analogamente a uma escolha de calibre para os potenciais eletromagnéticos, não altera a realidade da nossa solução, e portanto é uma escolha lícita.  Adotando essa condição, temos então duas equações diferenciais para $u_1$ e $u_2$, sendo a primeira devida à nossa ``escolha de calibre'' e a segunda devida a \eqref{mvp-Lyp}:
+%
+\begin{align}
+\label{mvp-c1}
+  y_1(t) \dot{u}_1(t) + y_2(t) \dot{u}_2(t) &= 0 \\
+\label{mvp-c2}
+  \dot{y}_1(t) \dot{u}_1(t) + \dot{y}_2(t) \dot{u}_2(t) &= f(t)
+\end{align}
+ou, então, em forma matricial,
+\begin{equation}
+  \begin{bmatrix}
+          y_1(t)  &       y_2(t)  \\
+    \dot{y}_1(t)  & \dot{y}_2(t)
+  \end{bmatrix}
+  \begin{bmatrix}
+    \dot{u}_1(t) \\
+    \dot{u}_2(t)
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    0 \\
+    f(t)
+  \end{bmatrix}
+\end{equation}
+
+Ao lado esquerdo temos a matriz wronskiana $\WronskianMatrix(t)$ que, como já vimos anteriormente, é invertível e tem seu determinante denotado por $W(t)$.  Assim, teremos
+\begin{equation}
+  \begin{bmatrix}
+    \dot{u}_1(t) \\
+    \dot{u}_2(t)
+  \end{bmatrix}
+  =
+  \frac{1}{W(t)}
+  \begin{bmatrix}
+    \dot{y}_2(t)  &      -y_2(t)  \\
+   -\dot{y}_1(t)  &       y_1(t)
+  \end{bmatrix}
+  \begin{bmatrix}
+    0 \\
+    f(t)
+  \end{bmatrix}
+  =
+  \frac{f(t)}{W(t)}
+  \begin{bmatrix}
+   -y_2(t)  \\
+    y_1(t)
+  \end{bmatrix}
+\end{equation}
+
+Para encontrar $u_1(t)$ e $u_2(t)$ explicitamente, basta integrar o lado direito da equação.  Note que a adição de uma constante arbitrária de integração a qualquer das $u_j(t)$ resulta na adição a $y_p(t)$ de um múltiplo das soluções da equação homogênea, e portanto não nos dá nenhuma informação nova.  Escolhendo a constante de integração tal que a solução particular se anule no instante inicial, teremos
+\begin{align}
+\label{particular-u12}
+  u_1(t) &= -\int_{t_0}^{t} \frac{y_2(s)}{W(s)} f(s)\,ds &
+  u_2(t) &= \int_{t_0}^{t} \frac{y_1(s)}{W(s)} f(s)\,ds
+\end{align}
+E, portanto, teremos como solução particular
+\begin{equation}
+  y_p(t) =
+    \int_{t_0}^{t}
+      \frac{1}{W(s)} \Big[
+        y_1(s) y_2(t) - y_1(t) y_2(s) \Big]
+      f(s)\,ds
+\end{equation}
+
+Definimos como $G(t, s)$ e denominamos \textbf{função de Green} o termo do integrando que multiplica $f$, ou seja,
+\begin{equation}
+\label{particular-green}
+  G(t, s) = \frac{1}{W(s)} \Big[ y_1(s) y_2(t) - y_1(t) y_2(s) \Big] \text,
+\end{equation}
+de modo que a solução particular adquire a forma
+\begin{equation}
+\label{particular-solgreen}
+  y_p(t) = \int_{t_0}^{t} G(t, s) f(s)\,ds
+\end{equation}
+
+Note que essa solução particular, além de se anular no instante inicial, tem derivada nula no instante inicial: levando em conta a condição de calibre, a expressão de $\dot{y}_p$ em \eqref{mvp-dyp} torna-se
+\begin{equation}
+\label{particular-deriv1}
+  \dot{y}_p(t) = u_1(t) \dot{y}_1(t) + u_2(t) \dot{y}_2(t) \text,
+\end{equation}
+que se anula em $t = t_0$ por conta das integrais, em \eqref{particular-u12}, que definem $u_1$ e $u_2$.
+
+
+À luz da expressão em \eqref{particular-solgreen} para $y_p(t)$, fica mais claro o papel da função de Green: ela indica o quanto a presença da função $f$ no instante $s$ afeta a solução no instante $t$.  Note, porém, que, se estivermos resolvendo o problema para $t < t_0$, essa interpretação gera um problema de causalidade: a solução no instante $t$ é afetada pela função $f$ nos instantes $s > t$, ou seja, ela ``recebe informação do futuro''!
+
+Com isso, podemos achar a solução do problema completo
+\begin{align*}
+  Ly &= f &
+  y(t_0) &= y_0 &
+  \dot{y}(t_0) &= v_0
+\end{align*}
+simplesmente aplicando as condições iniciais à solução geral do problema homogêneo ($y_h(t) = c_1 y_1(t) + c_2 y_2(t)$) e somando-lhe a solução particular $y_p(t)$.  Utilizando a expressão dos $c_i$ de \eqref{c1c2}, teremos
+\begin{equation}
+  y_h(t) =
+    y_0 \left[ \frac{y_1(t) \dot{y}_2(t_0) - \dot{y}_1(t_0) y_2(t)}{W(t_0)} \right] +
+    v_0 \left[ \frac{y_1(t_0) y_2(t) - y_1(t) y_2(t_0)}{W(t_0)} \right]
+\end{equation}
+
+Observe que nessa equação também podemos enxergar a presença da função de Green.  O segundo termo entre colchetes é exatamente a função de Green $G(t, t_0)$.  O primeiro termo está relacionado à derivada da função de Green: veja que
+\begin{align}
+  \frac{\partial G}{\partial s}(t, s)
+   &= -\frac{W'(s)}{W(s)} G(t, s)
+    + \frac{1}{W(s)} \Big[
+        \dot{y}_1 (s) y_2(t) - y_1(t) \dot{y}_2 (s)
+      \Big] \\[6pt]
+  \frac{\partial G}{\partial t}(t, s)
+   &= \frac{1}{W(s)} \Big[
+        y_1 (s) \dot{y}_2(t) - \dot{y}_1(t) y_2 (s)
+      \Big]
+\end{align}
+e, portanto, podemos escrever $y_h(t)$ de duas maneiras diferentes:
+\begin{align}
+  y_h(t) &=
+    -y_0 \left[ \frac{\partial G}{\partial s}(t, t_0)
+      + \frac{W'(t_0)}{W(t_0)} G(t, t_0) \right]
+    + v_0 G(t, t_0) \\[6pt]
+%
+  y_h(t) &=
+    \frac{W(t)}{W(t_0)} \left[ y_0 \frac{\partial G}{\partial t} (t_0, t) + v_0 G(t_0, t) \right]
+\end{align}
+
+Adotando a interpretação causal da função de Green, vemos que a primeira expressão parece se referir a instantes posteriores a $t_0$, e a segunda a instantes anteriores a $t_0$.
+
+% ----------------------------------------------------------------------------
+
+\subsection{Cálculo da função de Green: oscilador harmônico}
+
+Calcularemos a função de Green para a equação diferencial do oscilador harmônico, que é uma equação diferencial linear de 2ª ordem, do tipo
+\begin{equation}
+  \ddot{y} + 2\gamma \dot{y} + \omega_0^2 y = 0
+\end{equation}
+
+Há três casos de interesse a analisar, de acordo com as raízes do polinômio característico dessa equação:
+\begin{enumerate}
+
+  \item Quando $\omega_0 > \gamma$, temos a situação de \textbf{amortecimento subcrítico}: o polinômio tem duas raízes imaginárias conjugadas, $\lambda_1 = -\gamma - i\omega$ e $\lambda_2 = -\gamma + i\omega$, sendo $\omega = \sqrt{\omega_0^2 - \gamma^2}$.  As funções $y_1(t) = e^{\lambda_1 t}$ e $y_2(t) = e^{\lambda_2 t}$ constituem uma base para o espaço de soluções.  Assim, temos
+  \[
+    W(t)
+    =
+      \begin{vmatrix}
+                  e^{\lambda_1 t}  &            e^{\lambda_2 t} \\
+        \lambda_1 e^{\lambda_1 t}  &  \lambda_2 e^{\lambda_2 t}
+      \end{vmatrix}
+    =
+      (\lambda_2 - \lambda_1) e^{(\lambda_1 + \lambda_2)t}
+  \]
+  \[
+    G(t, s)
+    =
+      \frac{ e^{-(\lambda_1 + \lambda_2)s} }{ \lambda_2 - \lambda_1 }
+      \Big[
+        e^{\lambda_1 s + \lambda_2 t} -
+        e^{\lambda_1 t + \lambda_2 s}
+      \Big]
+    =
+      \frac{1}{ \lambda_2 - \lambda_1 }
+      \Big[
+        e^{\lambda_2 (t - s)} -
+        e^{\lambda_1 (t - s)}
+      \Big]
+  \]
+
+  Substituindo os valores de $\lambda_1$ e $\lambda_2$, teremos
+  \[
+    G(t, s) = e^{-\gamma(t - s)} \frac{e^{i\omega(t - s)} - e^{-i\omega(t - s)}}{2i\omega}
+  \]
+  \[
+    G(t, s) = \frac{1}{\omega} e^{-\gamma(t - s)} \sen [\omega(t-s)]
+  \]
+
+  \item Quando $\omega_0 < \gamma$, temos a situação de \textbf{amortecimento supercrítico}: o polinômio tem duas raízes reais, $\lambda_1 = -\gamma - \beta$ e $\lambda_2 = -\gamma + \beta$, sendo $\beta = \sqrt{\gamma^2 - \omega_0^2}$.  Continuamos tendo uma base gerada por $y_1(t) = e^{\lambda_1 t}$ e $y_2(t) = e^{\lambda_2 t}$, e, aproveitando as contas do caso anterior,
+  \[
+    G(t, s) = e^{-\gamma(t - s)} \frac{e^{\beta(t - s)} - e^{-\beta(t - s)}}{2\beta}
+  \]
+  \[
+    G(t, s) = \frac{1}{\beta} e^{-\gamma(t - s)} \senh [\beta(t-s)]
+  \]
+
+  \item Quando $\omega_0 = \gamma$, temos a situação de \textbf{amortecimento crítico}: o polinômio tem uma raiz real dupla $-\gamma$.  A solução $y_1(t) = e^{-\gamma t}$ não mais gera o espaço de soluções; devemos completar a base com $y_2(t) = t e^{-\gamma t}$, e teremos
+  \[
+    W(t)
+    =
+      \begin{vmatrix}
+                e^{-\gamma t}  &          t e^{-\gamma t} \\
+        -\gamma e^{-\gamma t}  &  (1 - \gamma t) e^{-\gamma t}
+      \end{vmatrix}
+    =
+      e^{-2\gamma t}
+  \]
+  \[
+    G(t, s)
+    =
+      e^{2\gamma t}
+      \Big[
+        te^{-\gamma(t + s)} -
+        se^{-\gamma(t + s)}
+      \Big]
+    =
+      (t - s) e^{-\gamma(t - s)}
+  \]
+  \[
+    G(t, s) = (t - s) e^{-\gamma(t - s)}
+  \]
+
+
+\end{enumerate}
+
+% ----------------------------------------------------------------------------
+
+\section{Equações inomogêneas de 1ª ordem revisitadas}
+
+Seja o operador diferencial $L = D - p(t)$.  Obtivemos anteriormente, para o problema $Ly = f$, a solução \eqref{edo1i-sol}:
+\[
+  y(t) = C e^{P(t)} + e^{P(t)} \int_{t_0}^{t} e^{-P(s)} f(s)\,ds
+\]
+
+Essa solução tem a mesma forma $y(t) = y_h(t) + y_p(t)$ da solução que construímos para as equações de 2ª ordem: o primeiro termo, $y_h(t)$, é a solução (geral) da equação homogênea $Ly_h = 0$; o segundo, $y_p(t)$, é uma solução particular (arbitrária) de $Ly_p = f$.
+
+Se considerarmos a condição inicial $y(t_0) = y_0$, a forma de solução coincidirá inclusive em termos de condições iniciais.  Com a escolha (arbitrária) do extremo inferior $t_0$ da integral em \eqref{edo1i-sol}, a solução particular $y_p(t)$ se anula no instante inicial.  Se também escolhermos $P(t)$ como a primitiva que se anula no instante $t_0$, ou seja, \[
+  P(t) = \int_{t_0}^{t} p(s)\,ds \text,
+\]
+a exponencial $e^{P(t)}$ valerá $1$ no instante $t_0$, fazendo com que a solução homogênea $y_h(t)$ tenha o valor $C$ no instante $t_0$, e portanto podemos identificar $C$ com $y_0$.
+
+Outra maneira de obter a solução, que nada mais é que o método da variação dos parâmetros para ordem 1, é supor que a solução particular da equação inomogênea tenha a forma $y_p(t) = u(t) y_h(t)$, sendo $y_h(t)$ solução da equação homogênea e $u(t)$ uma função arbitrária a determinar.  Substituindo esse \textit{ansatz}%
+  \footnote{\textit{Ansatz}, palavra alemã que significa \emph{tentativa}, geralmente indica uma tentativa de solução (um ``chute'') que, substituída na equação, revela (ou não) ser o resultado correto e as condições nas quais aquela é realmente a solução.}
+na equação diferencial, teremos
+\begin{align*}
+  y_p  &= u y_h \\
+  y_p' &= u' y_h + u y_h' \\
+  L y_p = y_p' - p y_p &= u' y_h + u \underbrace{(y_h' - p y_h)}_{=\:0} = f \text,
+\end{align*}
+sendo o termo destacado nulo em virtude da equação diferencial $Ly_h = 0$.  Assim, $u(t)$ satisfaz a equação diferencial
+\begin{equation}
+  u'(t) y_h(t) = f(t) \text,
+\end{equation}
+cuja solução é imediata:
+\begin{equation}
+  u(t) = \int \frac{f(t)}{y_h(t)} \,dt
+\end{equation}
+
+A solução particular é, então, dada por
+\[
+  y_p(t) = y_h(t) \int_{t_0}^{t} \frac{f(s)}{y_h(s)} \,ds \text,
+\]
+ou, usando a expressão explícita para $y_h(t) = e^{P(t)}$,
+\begin{equation}
+  y_p(t) = e^{P(t)} \int_{t_0}^{t} e^{-P(s)} f(s)\,ds \text,
+\end{equation}
+que reproduz a solução encontrada pelo outro método.  Podemos reescrever essa solução de forma a evidenciar uma função de Green para o problema de 1ª ordem:
+\begin{gather}
+  G(t, s) = e^{P(t)-P(s)} = \exp \left( \int_{s}^{t} p(t')\,dt' \right) \\
+  y_p(t) = \int_{t_0}^{t} G(t, s) f(s)\,ds
+\end{gather}
+
+% ############################################################################
+\chapter{Equações de ordem $n$}
+
+Considere uma equação diferencial linear de ordem $n$, com coeficientes constantes e homogênea, da forma
+\begin{equation}
+\label{edo-n-func}
+  y^{(n)} (t) + a_{n-1} y^{(n-1)} (t) + \cdots + a_1 y'(t) + a_0 y(t) = 0
+\end{equation}
+Em termos de operadores diferenciais agindo sobre a função $y$, essa equação assume a seguinte forma $(Ly)(t) = 0$:
+\begin{equation}
+  \big[ \left( D^n + a_{n-1} D^{n-1} + \cdots + a_1 D + a_0 I \right) y \big] (t) = 0 \text,
+\end{equation}
+na qual o operador $L$ que age sobre a função $y$ é um polinômio em $D$, ou seja, $L = p(D)$, com $p(x) = x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$.  Esse polinômio é denominado \textbf{polinômio característico} da equação diferencial.  Podemos fatorar (em $\C$) esse polinômio em $n$ fatores lineares, correspondendo a $n$ raízes complexas (não necessariamente distintas); como esse polinômio é mônico (o coeficiente do termo de maior grau é $1$), podemos escrever essa fatoração como \[
+  p(x) = (x - \lambda_1) (x - \lambda_2) \cdots (x - \lambda_n) \text, \]
+na qual $\lambda_1, \ldots, \lambda_n$ são as raízes (não necessariamente distintas) de $p$.  Assim, a equação diferencial $Ly = 0$ pode ser escrita na forma
+\begin{equation}
+  (D - \lambda_n I) \cdots (D - \lambda_2 I) (D - \lambda_1 I) y = 0
+\end{equation}
+
+A fatoração da equação permite que trabalhemos com ela muito mais facilmente.  Vamos definir as funções
+\begin{equation}
+  \begin{aligned}
+    x_1 &= y \\
+    x_2 &= \dot{x}_1 - \lambda_1 x_1 \\
+    x_3 &= \dot{x}_2 - \lambda_2 x_2 \\
+    &\ \:\vdots \\
+    x_{n} &= \dot{x}_{n-1} - \lambda_{n-1} x_{n-1}
+  \end{aligned}
+\end{equation}
+Veja que essas funções aparecem naturalmente na equação diferencial:
+\[
+  (D - \lambda_n I)
+  \underbrace{(D - \lambda_{n-1} I) \cdots
+    \underbrace{(D - \lambda_2 I)
+      \underbrace{(D - \lambda_1 I)
+        \overbrace{y}^{x_1}
+      }_{x_2}
+    }_{x_3}
+  }_{x_n} = 0
+\]
+Dessa maneira, convertemos a equação de ordem $n$ em $n$ equações de ordem $1$:
+\begin{equation}
+\label{edon-sist-jor}
+  \begin{aligned}
+    \dot{x}_1 &= \lambda_1 x_1 + x_2 \\
+    \dot{x}_2 &= \lambda_2 x_2 + x_3 \\
+    &\ \:\vdots \\
+    \dot{x}_{n-1} &= \lambda_{n-1} x_{n-1} + x_n \\
+    \dot{x}_{n} &= \lambda_n x_n
+  \end{aligned}
+\end{equation}
+
+Esse sistema pode ser resolvido com facilidade: da última equação, de 1ª ordem e homogênea, $x_n$ sai quase de graça; substituindo $x_n$ na penúltima equação, temos uma equação de 1ª ordem inomogênea, cuja solução também é simples.  Podemos assim resolver as $n$ equações de baixo para cima, substituindo o resultado de cada uma na anterior, até chegar à primeira, da qual sairá a função procurada, $y \equiv x_1$.
+
+% ----------------------------------------------------------------------------
+\section{Exemplo: 2ª ordem}
+
+Para exemplificar, vamos resolver dessa maneira as equações diferenciais lineares de 2ª ordem com coeficientes constantes ($\ddot{y} + a \dot{y} + by = 0$).  Se o polinômio característico $p(x) = x^2 + ax + b$ tem as duas raízes complexas $\lambda_1$ e $\lambda_2$ (que se relacionam com $a$ e $b$ pela conhecida fórmula de Bhaskara), podemos escrever a equação na forma fatorada $(D - \lambda_2)(D - \lambda_1)y = 0$.  Definindo $x_1 = y$ e $x_2 = \dot{x_1} - \lambda_1 x_1$, teremos o sistema de duas equações
+\begin{equation}
+  \begin{aligned}
+    \dot{x}_1 &= \lambda_1 x_1 + x_2 \\
+    \dot{x}_2 &= \lambda_2 x_2
+  \end{aligned}
+\end{equation}
+Resolvendo a segunda equação, teremos $x_2(t) = c_2 e^{\lambda_2 t}$.  A primeira equação, inomogênea, tem sua solução dada pela expressão \eqref{edo1ic-sol}:
+\begin{equation}
+\label{edo2-int}
+  x_1(t)
+  = c_1 e^{\lambda_1 t}
+    + e^{\lambda_1 t} \int_{t_0}^{t}
+        e^{-\lambda_1 s} x_2(s)\,ds
+  = c_1 e^{\lambda_1 t}
+    + c_2 e^{\lambda_1 t} \int_{t_0}^{t}
+        e^{(\lambda_2 - \lambda_1) s}\,ds
+\end{equation}
+A integral do lado direito de \eqref{edo2-int} é muito simples, mas é necessário dividi-la em duas situações: caso as raízes $\lambda_1$ e $\lambda_2$ sejam diferentes e caso sejam iguais.
+
+Caso as raízes sejam iguais (abandonaremos o índice neste caso e escreveremos $\lambda_1 = \lambda_2 \equiv \lambda$), o integrando em \eqref{edo2-int} é constante e igual a $1$; logo, a solução para $x_1(t)$ será
+\[
+  x_1(t)
+  = c_1 e^{\lambda t}
+    + c_2 e^{\lambda t} (t - t_0)
+\]
+e, renomeando as constantes ($C_1 = c_1 - c_2 t_0$, $C_2 = c_2$), teremos a solução geral escrita na forma
+\begin{equation}
+\label{edo2-sol-igu}
+  y(t) = C_1 e^{\lambda t} + C_2 t e^{\lambda t}
+\end{equation}
+Ou seja, quando as duas raízes do polinômio característico coincidem (e são iguais a $\lambda$), podemos tomar como base o conjunto das funções $\{e^{\lambda t}, te^{\lambda t}\}$.
+
+Caso $\lambda_1 \neq \lambda_2$, teremos
+\[
+  x_1(t)
+  = c_1 e^{\lambda_1 t}
+    + c_2 e^{\lambda_1 t} \frac{1}{\lambda_2 - \lambda_1}
+      \left[
+        e^{(\lambda_2 - \lambda_1) t}
+        - e^{(\lambda_2 - \lambda_1) t_0}
+      \right]
+\]
+Renomeando as constantes convenientemente ($C_2 = \frac{c_2}{\lambda_2 - \lambda_1}$ e $C_1 = c_1 - C_2 e^{(\lambda_2 - \lambda_1) t_0}$), a solução adquire a forma final
+\begin{equation}
+\label{edo2-sol-dist}
+  y(t) = C_1 e^{\lambda_1 t} + C_2 e^{\lambda_2 t} \text,
+\end{equation}
+que nos diz que uma base de soluções para a equação diferencial é $\{e^{\lambda_1 t}, e^{\lambda_2 t}\}$, em que $\lambda_1$ e $\lambda_2$ são as raízes do polinômio característico da equação.
+
+\subsection*{Outras representações do espaço de soluções}
+
+Ainda na situação em que as raízes são distintas, é interessante analisar o caso em que elas têm uma parte imaginária; caso os coeficientes da equação sejam reais (grande maioria dos casos), as raízes são necessariamente conjugadas, ou seja, podem ser escritas como $\lambda_1 = \gamma - i\omega$ e $\lambda_2 = \gamma + i\omega$, com $\gamma$ e $\omega$ reais.  Nesse caso, a solução geral pode ser escrita como
+\[
+  y(t) = e^{\gamma t} \left( C_1 e^{-i\omega t} + C_2 e^{i\omega t} \right)
+\]
+Lembrando da fórmula de Euler, $e^{i\theta} = \cos \theta + i \sen \theta$, teremos
+\[
+  y(t) = e^{\gamma t} \big[
+    (C_1 + C_2) \cos \omega t +
+    (C_2 - C_1) \sen \omega t \big]
+\]
+e, renomeando $A = C_1 + C_2$ e $B = C_2 - C_1$, a solução pode ser escrita como
+\begin{equation}
+\label{edo2-sol-dist-trig}
+  y(t) = e^{\gamma t} \left( A \cos \omega t + B \sen \omega t \right)
+  \text.
+\end{equation}
+Isto nos dá uma outra base de soluções para o problema: $\{e^{\gamma t} \cos \omega t, e^{\gamma t} \sen \omega t\}$.  Essa base é geralmente usada no problema do oscilador harmônico, tanto no caso subamortecido, quanto no caso sem amortecimento, no qual as raízes são puramente imaginárias ($\gamma = 0$) e a base se reduz à conhecida $\{\cos \omega t, \sen \omega t\}$.
+
+
+\section{Solução geral para ordem $n$}
+
+Olhando para o sistema de $n$ equações \eqref{edon-sist-jor} de 1ª ordem, equivalente à nossa equação de ordem $n$, e tomando o exemplo para $n = 2$ como inspiração, podemos perceber que, a cada equação de 1ª ordem que resolvemos, nos sobra uma constante arbitrária.  Como temos, ao todo, $n$ equações, parece razoável que a solução geral de uma equação de ordem $n$ dependa de $n$ constantes arbitrárias, ou seja, forme um espaço vetorial de dimensão $n$.
+
+% TODO
+
+% ----------------------------------------------------------------------------
+\section{O método da variação dos parâmetros, novamente}
+
+Vamos considerar uma equação diferencial linear de ordem $n$, não necessariamente com coeficientes constantes, e inomogênea:
+\begin{equation}
+  y^{(n)} (t) + a_{n-1}(t) y^{(n-1)} (t) + \cdots + a_1(t) y'(t) + a_0(t) y(t) = f(t) \text,
+\end{equation}
+que também pode, de maneira equivalente, ser expressa como $Ly = f$, para o operador $L = D^n + a_{n-1}(t) D^{n-1} + \cdots + a_1(t) D + a_0(t)$.  Suporemos conhecida uma base $\{y_1, \ldots, y_n\}$ do espaço de soluções de $Ly = 0$.  Nosso objetivo aqui será construir um método de encontrar uma solução particular da equação $Ly = f$, o que, como já vimos, permite que encontremos todas as soluções da equação.  (Vimos isso no contexto de equações de 2ª ordem, mas o raciocínio utilizado para obtermos essa conclusão não dependia da ordem da equação com a qual estávamos tratando.)
+
+A solução geral do problema homogêneo associado é do tipo $y(t) = c_1 y_1(t) + \cdots + c_n y_n(t)$.  Procuraremos, então, soluções particulares da forma
+\begin{equation}
+  y_p(t) = u_1(t) y_1(t) + \cdots + u_n(t) y_n(t) = \sum_{j=1}^{n} u_j(t) y_j(t) \text,
+\end{equation}
+na qual $u_1, \ldots, u_n$ são funções, a princípio arbitrárias.  Nossa ``escolha de calibre'' desta vez será um pouco mais complicada, pois, mais uma vez, a equação diferencial só nos dá um vínculo entre as $n$ funções $u_1, \ldots, u_n$; precisamos de mais $n-1$ vínculos para termos um sistema de equações determinado.  Vamos exigir, analogamente ao caso de 2ª ordem, que as derivadas de $y_p$ até ordem $n-1$ tenham a forma
+\begin{equation}
+\label{mvpn-vinc}
+  y_p^{(k)}(t) = \sum_{j=1}^{n} u_j(t) y_j^{(k)}(t) \text{, } 1 \le k \le n-1 \text,
+\end{equation}
+ou seja, proibiremos as derivadas de $u_j$ de figurar na expressão das derivadas de $y_p$.  Calculando sucessivamente as derivadas de $y_p$, teremos
+\[
+  y_p'(t) = \sum_{j=1}^{n} u_j'(t) y_j(t) + \sum_{j=1}^{n} u_j(t) y_j'(t) \text,
+\]
+que nos leva a anular a primeira somatória.  Continuando a derivada (apenas para a segunda somatória), temos
+\[
+  y_p''(t) = \sum_{j=1}^{n} u_j'(t) y_j'(t) + \sum_{j=1}^{n} u_j(t) y_j''(t) \text,
+\]
+que nos leva, novamente, a anular a primeira somatória.  Perceba que assim sucede até o final:
+\[
+  y_p^{(n-1)}
+    = \frac{d}{dt} y_p^{(n-2)}
+    = \frac{d}{dt} \left[ \sum_{j=1}^{n} u_j y_j^{(n-2)} \right]
+    = \underbrace{\sum_{j=1}^{n} u_j' y_j^{(n-2)}}_{=\:0}
+      + \sum_{j=1}^{n} u_j y_j^{(n-1)}
+\]
+\begin{equation}
+\label{mvpn-ypn}
+  y_p^{(n)} = \sum_{j=1}^{n} u_j' y_j^{(n-1)} + \sum_{j=1}^{n} u_j y_j^{(n)}
+\end{equation}
+Resumindo, as condições que adotamos até aqui foram as seguintes:
+\[
+  \sum_{j=1}^{n} u_j' y_j = 0 \text,\quad
+  \sum_{j=1}^{n} u_j' y_j' = 0 \text,\quad
+  \ldots\text,\quad
+  \sum_{j=1}^{n} u_j' y^{(n-2)}_j = 0
+\]
+Agora, substituindo $y_p$ e suas derivadas na equação diferencial, teremos
+\[
+  y_p^{(n)} + \sum_{k=1}^{n-1} a_k y_p^{(k)} = f \]
+\[
+  \sum_{j=1}^{n} u_j' y_j^{(n-1)}
+  + \sum_{j=1}^{n} u_j y_j^{(n)}
+  + \sum_{k=1}^{n-1} a_k \sum_{j=1}^{n} u_j y_j^{(k)} = f \]
+\[
+  \sum_{j=1}^{n} u_j' y_j^{(n-1)}
+  + \sum_{j=1}^{n} u_j \underbrace{\left[
+      y_j^{(n)}
+      + \sum_{k=1}^{n-1} a_k y_j^{(k)}
+    \right]}_{=\:0} = f
+\]
+O termo destacado na última equação anula-se pois ele corresponde justamente ao operador $L$ aplicado a $y_j$, e todos os $y_j$ são soluções da equação homogênes $Ly_j = 0$.  Agora sim temos $n$ equações independentes que permitem encontrar os $u_j'$:
+\begin{equation}
+\label{mvpn-sist}
+  \sum_{j=1}^{n} u_j' y_j = 0 \text,\quad
+  \sum_{j=1}^{n} u_j' y_j' = 0 \text,\quad
+  \ldots\text,\quad
+  \sum_{j=1}^{n} u_j' y^{(n-2)}_j = 0 \text,\quad
+  \sum_{j=1}^{n} u_j' y^{(n-1)}_j = f
+\end{equation}
+Ou, em forma matricial,
+\begin{equation}
+\label{mvpn-sistm}
+  \begin{bmatrix}
+    y_1 & y_2 & \cdots & y_n \\
+    y_1' & y_2' & \cdots & y_n' \\
+    \vdots & \vdots & \ddots & \vdots \\
+    y_1^{(n-2)} & y_2^{(n-2)} & \cdots & y_n^{(n-2)} \\
+    y_1^{(n-1)} & y_2^{(n-1)} & \cdots & y_n^{(n-1)}
+  \end{bmatrix}
+  \begin{bmatrix}
+    u_1' \\ u_2' \\ \vdots \\ u_n'
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    0 \\ 0 \\ \vdots \\ 0 \\ f
+  \end{bmatrix}
+\end{equation}
+
+A matriz que aparece do lado esquerdo da equação é a matriz wronskiana $\WronskianMatrix(t)$ relativa ao conjunto de funções $\{y_1, \ldots, y_n\}$; como esse conjunto é uma base (portanto é linearmente independente), a matriz possui inversa, e podemos usá-la para isolar o vetor coluna $U' := (u_1', \ldots, u_n')$:
+\[
+  U'
+  = (u_1', \ldots, u_n')
+  = \WronskianMatrix^{-1} (0, \ldots, 0, f)
+\]
+A multiplicação pelo vetor coluna $(0, \ldots, 0, f)$ extrai a última coluna da inversa (multiplicada por $f$).  Vamos encontrá-la pela fórmula da inversa em termos dos cofatores: \[
+  A^{-1} = \frac{1}{\det A} (\cof A)^T \text. \]
+A última coluna da inversa será formada pelos cofatores da última \emph{linha} de $\WronskianMatrix$ (note a transposição na fórmula!), ou seja, os elementos $(\cof \WronskianMatrix)_{nj}$).  O elemento $(\cof \WronskianMatrix)_{nj}$ será o determinante da matriz obtida de $\WronskianMatrix$ eliminando-se a última linha e a $j$-ésima coluna, multiplicado pelo sinal $(-1)^{n+j}$ (que também pode ser escrito como $(-1)^{n-j}$).  Denotemos esse determinante por $W_j$.  Note que esse determinante equivale ao wronskiano das $n-1$ funções que restam quando se retira $y_j$ do conjunto $\{y_1, \ldots, y_n\}$.  Assim, teremos (lembre-se de que $\det \WronskianMatrix = W$)
+\[
+  U' = \frac{f}{W}
+       \big(
+         (-1)^{n-1} W_1,
+         (-1)^{n-2} W_2,
+         \ldots,
+         -W_{n-1},
+         W_n \big)
+\]
+ou, componente por componente,
+\begin{equation}
+  u_j'(t) = (-1)^{n-j} \frac{W_j(t)}{W(t)} f(t)
+\end{equation}
+Essa equação pode ser integrada diretamente para obtermos as funções $u_j(t)$:
+\begin{equation}
+  u_j(t) = (-1)^{n-j} \int_{t_0}^{t} \frac{W_j(s)}{W(s)} f(s)\,ds
+\end{equation}
+ou para obtermos a solução particular em sua forma final:
+\begin{equation}
+  y_p(t)
+    = \sum_{j=1}^{n} u_j(t) y_j(t)
+    = \sum_{j=1}^{n} (-1)^{n-j} y_j(t) \int_{t_0}^{t} \frac{W_j(s)}{W(s)} f(s)\,ds
+\end{equation}
+Com isso, podemos escrever a solução particular em termos de uma função de Green:
+\begin{equation}
+  y_p(t) = \int_{t_0}^{t} G(t,s) f(s)\,ds
+\end{equation}
+\begin{equation}
+  G(t,s) = \frac{(-1)^n}{W(s)} \sum_{j=1}^{n} (-1)^{j} y_j(t) W_j(s)
+\end{equation}
+
+% ----------------------------------------------------------------------------
+\section{A exponencial de uma matriz e a forma canônica de Jordan}
+
+Com as funções $x_1, \ldots, x_n$ que definimos, transformamos uma equação diferencial de ordem $n$ (para a função $y \equiv x_1$) num sistema de $n$ equações de primeira ordem \eqref{edon-sist-jor} envolvendo as funções $x_1, \ldots, x_n$.  Esse sistema pode ser escrito de forma matricial: se definirmos o vetor coluna $X = (x_1, \ldots, x_n)$, o sistema pode ser escrito de maneira matricial:
+\begin{equation}
+\label{edon-sist-mat}
+  \begin{bmatrix}
+    \dot{x}_1 \\ \dot{x}_2 \\ \vdots \\ \dot{x}_n
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    \lambda_1 & 1 & 0 & \cdots & 0 \\
+    0 & \lambda_2 & 1 & 0 & \\
+    \vdots & \ddots & \ddots & \ddots & \vdots \\
+    0 & &  0 & \lambda_{n-1} & 1 \\
+    0 & \cdots & & 0 & \lambda_n
+  \end{bmatrix}
+  \begin{bmatrix}
+    x_1 \\ x_2 \\ \vdots \\ x_n
+  \end{bmatrix} \text,
+\end{equation}
+representada abreviadamente como $\dot{X} = AX$, em que $A$ é a matriz ($n \times n$) em \eqref{edon-sist-mat}.
+
+Repare na semelhança entre a equação $\dot{X} = AX$ e as equações de 1ª ordem que já vimos: $\dot{y} = \lambda y$, cuja solução era do tipo $y(t) = y_0 e^{\lambda t}$.  Seria possível definir uma matriz ``$e^{At}$'' de forma que a solução para a equação matricial seja $X(t) = e^{At} X_0$, na qual $X_0$ é um vetor coluna?
+
+A resposta é afirmativa: dada uma matriz $A$, definimos a exponencial $e^{At}$ pela mesma série que define a exponencial de um número complexo:
+\begin{equation}
+  e^z = \sum_{n=0}^{\infty} \frac{z^n}{n!} \quad\Rightarrow\quad
+  e^{At} = \sum_{n=0}^{\infty} \frac{t^n}{n!} A^n = I + \sum_{n=1}^{\infty} \frac{t^n}{n!} A^n
+\end{equation}
+Para mostrar que isso realmente fornece a solução, precisamos primeiro verificar que essa série realmente faz sentido (isto é, se ela converge); não é difícil demonstrar esse fato, mas a demonstração não é muito interessante do ponto de vista dos nossos objetivos.  Vamos apenas verificar que $X(t) = e^{At} X_0$ satisfaz a equação $\dot{X} = AX$.  Derivando termo a termo, temos
+\begin{align*}
+  X(t)
+    &= e^{At} X_0
+    = \sum_{n=0}^{\infty} \frac{t^n}{n!} A^n X_0
+    = X_0 + \sum_{n=1}^{\infty} \frac{t^n}{n!} A^n X_0 \\
+  \dot{X}(t)
+    &= \sum_{n=1}^{\infty} \frac{n t^{n-1}}{n!} A^n X_0
+    = A \left( \sum_{n=1}^{\infty} \frac{t^{n-1}}{(n-1)!} A^{n-1} X_0 \right)
+    = A \sum_{n=0}^{\infty} \frac{t^n}{n!} A^n X_0 = A X(t)
+\end{align*}
+
+Calcular a exponencial de uma matriz em geral não é uma tarefa fácil.  No entanto, há vários casos em que a conta se simplifica bastante:
+
+\begin{enumerate}
+  \item Se $A$ é \textbf{diagonal}, $A = \diag(\lambda_1, \ldots, \lambda_n)$, suas potências $A^k$ são facilmente calculáveis: simplesmente se eleva cada elemento da diagonal à potência $k$.  Assim, na expansão de $e^A$ para cada elemento $\lambda_j$ da diagonal, aparecerá exatamente a série da exponencial $e^{\lambda_j}$; como consequência, teremos \[
+    e^A = \diag(e^{\lambda_1}, \ldots, e^{\lambda_n}) \text. \]
+
+  \item Ainda que $A$ não seja diagonal, mas seja \textbf{diagonalizável}, ou seja, caso exista uma matriz $P$ invertível tal que $P^{-1} A P = B$ seja diagonal, a exponencial de $A$ é bastante simples.  Ao calcular uma potência $A^k$, teremos \[
+    A^k = (P B P^{-1})^k
+      = \underbrace{P B P^{-1} \cdot P B P^{-1} \cdots P B P^{-1}}_{k\text{ vezes}} = P B^k P^{-1} \text, \]
+  pois os fatores $P^{-1} P$ que aparecem no meio da expansão se cancelam.  Dessa maneira, na exponencial de $A$, os fatores $P$ e $P^{-1}$ aparecem em volta de todos os termos, de modo que podem ser colocados em evidência, restando no meio a exponencial de $B$, que é facilmente calculada pois $B$ é diagonal: \[
+    e^A = P e^B P^{-1} \text. \]
+
+  \item Se $A$ é \textbf{nilpotente}, ou seja, existe algum número $r$ tal que $A^r = 0$ (a matriz tem alguma potência igual à matriz nula), então a série que define a exponencial $e^A$ pára na última potência não-nula de $A$: se definirmos $r$ como o \emph{menor} inteiro tal que $A^r = 0$ ($r$ é denominado \emph{índice de nilpotência} de $A$), então a série é truncada no termo de $A^{r-1}$.  Com isso, só precisamos calcular as primeiras $r-1$ potências de $A$: \[
+    e^A = I + A + \frac{1}{2!} A^2 + \cdots + \frac{1}{(r-1)!} A^{r-1} \text. \]
+
+  \item Se todas as matrizes fossem diagonalizáveis ou nilpotentes, nossos problemas estariam resolvidos; mas existem matrizes que não são nem diagonalizáveis nem nilpotentes.  Porém, toda matriz pode ser escrita como a soma de uma matriz $M$ diagonalizável (em $\C$) com uma matriz $N$ nilpotente, como consequência do teorema da \textbf{decomposição de Jordan}.  Esse teorema também afirma algo bem importante: essas duas matrizes \emph{comutam}, ou seja, $MN = NM$.  Com isso, dada uma matriz $A$ em sua decomposição de Jordan $A = M + N$, temos \[
+    e^A = e^{M + N} = e^M e^N \text, \]
+  e tanto $e^M$ quando $e^N$ são calculáveis de acordo com os itens anteriores.  Onde entra o fato de que $M$ e $N$ comutam?  Na passagem $e^{M + N} = e^M e^N$, que fizemos silenciosamente --- ela só pode ser feita quando $M$ e $N$ comutam.  Caso contrário, teríamos também (pela comutatividade da soma) $e^M e^N = e^{M + N} = e^{N + M} = e^N e^M$, o que não vale em geral para matrizes que não comutam!
+\end{enumerate}
+
+
+Veja que a matriz $A$ do nosso sistema em \eqref{edon-sist-mat} tem uma forma muito simples: na diagonal principal aparecem as raízes do polinômio característico, a diagonal acima da principal é preenchida por uns, e as entradas restantes são nulas.  Podemos decompô-la como soma de duas matrizes: uma matriz diagonal $M = \diag(\lambda_1, \ldots, \lambda_n)$ e uma matriz $N$ que tem a supradiagonal preenchida por uns (com o restante das entradas nulo).  Veja que temos $A = M + N$ com $M$ diagonal e $N$ nilpotente; no entanto, essa \emph{não} é a forma da decomposição de Jordan, pois $M$ e $N$ \emph{não comutam}!  É fácil verificar que $MN$ é uma matriz com os elementos $(\lambda_1, \ldots, \lambda_{n-1})$ na supradiagonal; $NM$ tem na supradiagonal os elementos $(\lambda_2, \ldots, \lambda_n)$.  Elas só coincidem caso todos os $\lambda_j$ sejam iguais!
+
+% XXX http://en.wikipedia.org/wiki/Jordan_normal_form XXX
+
+\end{document}

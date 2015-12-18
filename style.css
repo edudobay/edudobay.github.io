@@ -1,0 +1,149 @@
+html {
+   background: #525458 url(imagens/bg3.png) center top repeat fixed;
+   margin: 0;
+   padding: 0;
+}
+
+body {
+   /*background-color: white;*/
+   max-width: 95%;
+   width: 50em;
+   margin: 0 auto;
+   padding: 0;
+   font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+   color: white;
+   text-align: right;
+   margin: 0 190px 0 0;
+   padding: 0.5em;
+   font: normal 150% 'Fauna One', serif;
+}
+
+#content { }
+
+#main h3,
+#main p,
+#main .figure,
+#main ul {
+   margin-left: 2.5%;
+}
+
+#content h2:first-child {
+   margin-top: 0;
+}
+
+#main {
+   background-color: white;
+   padding: 32px 20px;
+   margin: 0 202px 32px 0;
+   border-radius: 32px;
+}
+
+#main a { color: #0000ff; text-decoration: none; }
+#main a:hover { background-color: #d9d9ff; }
+#main a:active { background-color: #d9d9ff; color: red; }
+#main a:focus { background-color: #d9d9ff; color: red; }
+
+#myinfo {
+   margin-top: 48px;
+   color: #333;
+   font-size: 80%;
+   font-family: 'Roboto', sans-serif;
+   float: right;
+}
+
+#myinfo #info-header {
+   background-color: #32e54a;
+   color: #226622;
+   font-weight: bold;
+   text-transform: uppercase;
+   padding: 10px;
+}
+
+#myinfo #info-text {
+   background-color: #c9d9bf;
+   padding: 20px 16px 10px 16px;
+   width: 170px;
+}
+
+#myinfo #info-picture { text-align: center; margin: 0 0 1em 0; }
+#myinfo #info-text p { margin: 0 0 0.75em; }
+
+#main p, #main ul {
+   margin-top: 0.25em;
+}
+
+#myinfo a { color: #666; }
+#myinfo a:hover { color: #333; }
+
+#myinfo .info-left {
+   float: left;
+   width: 50%;
+   font-style: italic;
+}
+
+#myinfo .info-right {
+   float: right;
+   text-align: right;
+   width: 50%;
+}
+
+.clear {
+   clear: both;
+}
+
+h2 {
+   margin: 1.5em 0 1em;
+   padding: 0 30px 2px 0;
+   background: url(imagens/header_bullet.png) bottom right no-repeat;
+   border-bottom: 1px solid #ff6600;
+   color: #ff6600;
+   font-family: 'Fauna One', serif;
+   font-size: 140%;
+}
+
+h3 {
+   font-family: 'Raleway', serif;
+}
+
+li {
+   margin-bottom: 0.5em;
+}
+
+.figure {
+   text-align: center;
+}
+
+img {
+   border: none;
+}
+
+.item-meta {
+  display: block;
+  font-size: 83%;
+  color: #666;
+}
+
+@media screen and (max-width: 480px) {
+
+h1 {
+   margin: 0;
+}
+
+#myinfo {
+   float: none;
+   margin-top: 0;
+   margin-bottom: 1em;
+}
+
+#myinfo #info-text {
+   width: auto;
+}
+
+#main {
+   margin-right: 0;
+}
+
+}
