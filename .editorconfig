@@ -1,0 +1,16 @@
+root = true
+
+[*]
+indent_style = space
+end_of_line = lf
+insert_final_newline = true
+
+[Makefile]
+indent_style = tab
+
+[*.py]
+indent_size = 4
+
+[*.{html,css}]
+indent_size = 2
+
