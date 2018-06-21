@@ -3,3 +3,6 @@ venv/
 __pycache__
 
 /output/
+
+# Dev server PID files
+*.pid
