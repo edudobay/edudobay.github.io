@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
+from os.path import dirname, join
 
 AUTHOR = 'Eduardo Dobay'
 SITENAME = 'Eduardo Dobay'
 SITEURL = ''
+
+THEME = join(dirname(__file__), 'theme')
 
 PATH = 'content'
 
