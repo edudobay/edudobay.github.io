@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="date" content="2009-03-01">
+<meta name="modified" content="2009-03-30">
+<title>Tetris</title>
+</head>
+<body>
+
+<div id="content">
+
+<h2>Tetris</h2>
+
+<p>Um tempo atrás estava brincando com o <a href="http://www.inkscape.org/">Inkscape</a> e desenhei uns quadrados arredondados, e pensei &ldquo;Puxa, esses quadrados bem que poderiam ser peças de Tetris&rdquo;. Aí resolvi que alguma hora iria programar um Tetris. Até porque não conhecia nenhum Tetris bacana para Windows.</p>
+
+<p>Fiz o programa em C++, e o resultado ficou bem bonitinho, como pode ser visto na figura abaixo (clique para ampliar):</p>
+
+<div class="figure"><a href="{filename}/assets/ifusp/tetris.png"><img src="{filename}/assets/ifusp/tetris.png" width="212" height="234" alt="Screenshot do Tetris" /></a></div>
+
+<p>Qualquer semelhança com o <a href="http://live.gnome.org/Gnometris">Gnometris</a> (um dos Tetris para Linux) não é mera coincidência. Eu me baseei bastante nele; em particular, o algoritmo de pontuação é o mesmo, até porque não tinha idéia de que algoritmo inventar.</p>
+
+<h2>Download</h2>
+
+<p>Quem puder, por favor teste o programa! Jogue, divirta-se e veja se não tem bugs esquisitos. A versão atual é do dia <strong>12/2/2009</strong> (sem número, por enquanto).</p>
+
+<ul>
+   <li>Versão para <a href="tetris-linux.zip"><strong>Linux</strong></a> (15 KiB). Esta versão foi compilada para GTK+ 2.14; para rodar num GTK anterior a esse, provavelmente será necessário recompilar (baixe o código-fonte para isso).</li>
+   <li>Versão para <a href="tetris-win.zip"><strong>Windows</strong></a> (18 KiB). Provavelmente, se você rodar o <tt>tetris</tt> direto, ele vai reclamar que não achou uma DLL, mesmo que o GTK esteja instalado. Para funcionar direito, rode o programa <tt>loader</tt>.</li>
+   <li><a href="tetris-src.zip">Código-fonte</a> (10 KiB). Para compilar no Linux, basta descompactar numa pasta, ir até essa pasta no terminal e digitar <tt>make</tt>.</li>
+</ul>
+
+<p>Ah, precisa de <a href="http://www.gtk.org/">GTK</a> para rodar. No Linux já costuma vir instalado, qualquer coisa é só correr para seu gerenciador de pacotes. No Windows, instale esse trem aqui: <a href="http://downloads.sourceforge.net/pidgin/gtk-runtime-2.14.6-rev-a.exe?modtime=1231447823&big_mirror=1">GTK+ 2.14.6 para Windows</a>, ou algum outro &ldquo;GTK+ Runtime&rdquo; que achar por aí nas ruas.</p>
+
+<h2>Manual do usuário</h2>
+
+<p>O programa não tem menus nem botões. Para jogar, use estas teclas:</p>
+
+<ul>
+   <li><strong>Setas</strong> (esquerda/direita/baixo): movem a pecinha em uma unidade na direção correspondente.</li>
+   <li><strong>Seta para cima</strong>: roda a pecinha no sentido anti-horário.</li>
+   <li><strong>Espaço</strong>: derruba a pecinha até o final.</li>
+   <li><strong>N</strong>: começa um novo jogo.</li>
+   <li><strong>P</strong>: pausa/despausa o jogo.</li>
+   <li><strong>C</strong>: termina o jogo atual.</li>
+   <li><strong>Q</strong>: sai do programa.</li>
+</ul>
+
+</div><!-- content -->
+</body>
+</html>

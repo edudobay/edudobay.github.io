@@ -1,0 +1,195 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ae}
+\usepackage[brazil]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{xcolor,calc}
+\usepackage{float,array}
+
+\makeatletter
+\def\maketitle{%
+  \begin{center}%
+    {\LARGE\@title\par}\vskip 0.875em%
+    {\large\scshape\@author\par}\vskip 0.375em%
+    {\@date\par}\vskip 2em%
+  \end{center}%
+}
+\makeatother
+
+%\newcommand{\V}{\mathbb{V}}
+\newcommand{\V}{V}
+\newcommand{\B}{\mathscr{B}}
+\newcommand{\C}{\mathscr{C}}
+
+\begin{document}
+
+\title{Sobre mudanças de base}
+\author{Eduardo S. Dobay}
+\date{17 de maio de 2009}
+\maketitle
+
+As matrizes de mudança de base são motivo de frequente confusão entre estudantes de Álgebra Linear.  Tentarei aqui esclarecer alguns pontos sobre esse assunto.
+\medskip
+
+Seja $\V$ um espaço vetorial de dimensão $n$ e sejam $\B = \{\beta_1, \ldots, \beta_n\}$ e $\C = \{\beta'_1, \ldots, \beta'_n\}$ bases de $\V$.  Assim, um vetor arbitrário $x \in \V$ pode ser escrito como uma \emph{combinação linear} dos vetores da base $\B$:
+\begin{equation}\label{coord x b}
+    x = x_1 \beta_1 + \cdots + x_n \beta_n = \sum_{i=1}^n x_i \beta_i
+\end{equation}
+Dizemos que $x_1, \ldots, x_n$ são as \emph{coordenadas de $x$ em relação à base (ordenada) $\B$}.  Mais adiante será útil também escrevê-las em forma matricial --- denotaremos a matriz coluna formada pelas coordenadas por $[x]_{\B}$ ou $X$:
+\[
+    [x]_{\B} = X = \begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix}
+\]
+
+O vetor $x$ também pode ser escrito em termos dos vetores de $\C$, com outro conjunto de coordenadas $x'_1, \ldots, x'_n$:
+\begin{equation}\label{coord x bp}
+    x = x'_1 \beta'_1 + \cdots + x'_n \beta_n = \sum_{j=1}^n x'_j \beta'_j
+\end{equation}
+A matriz coluna com essas coordenadas é, por analogia, denotada $[x]_{\C}$ ou $X'$.
+
+Qual a relação entre os dois conjuntos de coordenadas $\{x_i\}$ e $\{x'_j\}$?  Para descobrir isso, precisaremos das relações entre os vetores de $\B$ e $\C$.  Vamos escrever os vetores de $\C$ em termos dos vetores de $\B$:
+\begin{equation}\label{coord bpj b}
+    \beta'_j = a_{1j} \beta_1 + a_{2j} \beta_2 + \cdots + a_{nj} \beta_n = \sum_{i=1}^n a_{ij} \beta_i
+\end{equation}
+
+Perceba que, da maneira como os coeficientes $a_{ij}$ foram definidos, as colunas da matriz $M = [a_{ij}]$ corresponderão às coordenadas dos vetores de $\C$ em relação à base $\B$ --- a $j$-ésima coluna contém os elementos $a_{1j}, \ldots, a_{nj}$, que são justamente as coordenadas de $\beta'_j$ com respeito a $\B$ de acordo com a definição acima.
+
+Assim, chamamos a matriz $M$, também denotada $M_{\B \to \C}$, de \emph{matriz mudança de base de $\B$ para $\C$}.  Reforcemos que, nessa matriz, \emph{as colunas são as coordenadas da base ``nova'' ($\C$) em relação à base ``antiga'' ($\B$)}.
+
+Continuemos nosso problema original: encontrar a relação entre as coordenadas de $x$ nas duas bases.  Vamos substituir a expressão de $\beta'_j$ na equação \eqref{coord x bp}:
+\begin{align}
+    x &= \sum_{j=1}^n x'_j \beta'_j
+       = \sum_{j=1}^n x'_j \left( \sum_{i=1}^n a_{ij} \beta_i \right)
+       = \sum_{j=1}^n \sum_{i=1}^n x'_j a_{ij} \beta_i \notag\\
+      &= \sum_{i=1}^n \sum_{j=1}^n x'_j a_{ij} \beta_i
+       = \sum_{i=1}^n \left( \sum_{j=1}^n a_{ij} x'_j \right) \beta_i
+\end{align}
+
+Por outro lado, $x$ também pode ser escrito como
+\[
+    x = \sum_{i=1}^n x_i \beta_i 
+\tag{\ref{coord x b}}
+\]
+Como as coordenadas de um vetor em relação a uma base são únicas, devemos ter, obrigatoriamente,
+\begin{equation}\label{coord x xp}
+    x_i = \sum_{j=1}^n a_{ij} x'_j
+\end{equation}
+Estabelecemos a procurada relação entre as coordenadas $\{x_i\}$ e $\{x'_j\}$.  (Na verdade, encontramos a relação inversa: as coordenadas ``antigas'' em função das ``novas''.)  Podemos escrevê-la em forma matricial:
+\begin{equation}\label{coord x xp m}
+    X = MX'
+\end{equation}
+Naturalmente, essa relação deve ser inversível; portanto, para escrever $X'$ em função de $X$ basta tomar a inversa de $M$ (poderíamos refazer as contas para chegar a uma equação do tipo $X' = BX$, e seria fácil concluir que $B = M^{-1}$):
+\begin{equation}\label{coord xp x m}
+    X' = M^{-1}X
+\end{equation}
+
+Portanto, para transformar as coordenadas de um vetor para uma outra base, devemos multiplicar pela \emph{inversa da matriz mudança de base}.
+
+
+\subsection*{Matrizes de transformações}
+
+Consideremos agora uma transformação linear $T : \V \to \V$ e sejam $[T]_\B$ e $[T]_\C$ as matrizes de $T$ em relação às bases $\B$ e $\C$, respectivamente.  Vamos determinar a relação entre essas matrizes.
+
+As matrizes supracitadas devem ser tais que, se $x \in \V$, então
+\begin{equation}
+\begin{split}
+    [T]_\B [x]_\B &= [Tx]_\B \\
+    [T]_\C [x]_\C &= [Tx]_\C
+\end{split}
+\end{equation}
+
+Escrevendo $[Tx]_\B = Y$ e $[Tx]_\C = Y'$ e lembrando que $X = MX'$ e $Y = MY'$, teremos
+\begin{equation}
+\begin{split}
+    [T]_\B MX' &= MY' \\
+    [T]_\C X'  &=  Y'
+\end{split}
+\end{equation}
+
+Substituindo a segunda igualdade no lado direito da primeira, temos
+\[
+    [T]_\B MX' = M [T]_\C X'
+\]
+Como essa igualdade deve valer para qualquer vetor $x$, então devemos ter $[T]_\B M = M [T]_\C$, ou
+\begin{equation}
+    [T]_\C = M^{-1} [T]_\B M
+\end{equation}
+
+Em outras palavras, para mudar de base a matriz de uma transformação linear, multiplicamos \emph{à direita pela matriz mudança de base, e à esquerda por sua inversa}.
+
+Há uma maneira mais intuitiva de pensar nisso.  A matriz $[T]_\C$ deve ser tal que
+\[
+    [T]_\C [x]_\C = [Tx]_\C  \text.
+\]
+Agora suponha que temos as coordenadas de $x$ em $\C$ e queremos encontrar as coordenadas de $Tx$ também em $\C$.  Se soubermos a matriz $[T]_\B$, podemos fazer o seguinte procedimento:
+
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{rp{10cm}}
+    $[x]_\C$   
+                &  coordenadas de $x$ em relação a $\C$ \\
+    $M[x]_\C$
+                &  passamos para a base $\B$ (estas são as coordenadas $[x]_\B$) \\
+    $[T]_\B M [x]_\C$
+                &  de posse das coordenadas de $x$ na base $\B$, conseguimos
+                   achar as coordenadas de $Tx$ na base $\B$ \\
+    $M^{-1} [T]_\B M [x]_\C$
+                &  se temos $Tx$ na base $\B$, basta multiplicar $M^{-1}$ para
+                   obter o mesmo vetor na base $\C$ \\
+  \end{tabular}
+\end{table}
+
+Daí, concluímos que $M^{-1} [T]_\B M$ é a matriz $[T]_\C$ desejada.
+
+
+\subsubsection*{Outra forma de ver a matriz mudança de base}
+
+Pensemos agora na matriz de uma transformação linear $T$ em relação às bases $\C$ e $\B$.  Se $Tx = y$, então
+\begin{equation}
+    [T]_{\C\!,\B}\ [x]_{\C} = [y]_{\B}
+\end{equation}
+Uma mudança de base não altera nenhum vetor; ela apenas dá as coordenadas de um vetor em outra base.  Podemos, então, pensar na matriz mudança de base como a matriz da transformação identidade $I$ em relação às bases $\C$ e $\B$.  Basta reescrever a equação anterior no caso em que $T = I$ e portanto $Tx = x$:
+\[
+    [I]_{\C\!,\B}\ [x]_{\C} = [x]_{\B}  \quad\text{ ou }
+    X = [I]_{\C\!, \B} X'
+\]
+Portanto, comparando com \eqref{coord x xp m}, concluímos que
+\[
+    M_{\B \to \C} = [I]_{\C\!, \B}
+\]
+Ou seja, a matriz mudança de base de $\B$ para $\C$ é igual à matriz da transformação identidade em relação ao par de bases $(\C, \B)$.
+
+
+\bigskip
+
+\setlength{\fboxsep}{0.75em}
+\noindent\colorbox[gray]{0.875}{\parbox{\linewidth-2\fboxsep}{
+\vspace*{-1em}
+\subsection*{Resumo}
+\sffamily
+\parindent=1.5em
+\parskip=1em
+
+Dadas duas bases $\B$ e $\C$ de um espaço vetorial $\V$ de dimensão finita, a \emph{matriz mudança de base de $\B$ para $\C$} é a matriz $M_{\B \to \C}$ cujas colunas são as coordenadas dos vetores de $\C$ em relação à base $\B$.
+
+Se $x \in \V$, suas coordenadas nas bases $\B$ e $\C$ são relacionadas por
+\[
+    [x]_\C = M^{-1} [x]_\B  \text,
+\]
+onde $M = M_{\B \to \C}$ é a matriz mudança de base mencionada acima.
+
+Se $T$ é um operador linear sobre $\V$, sua matriz com respeito à base $\B$ e sua matriz com respeito a $\C$ têm a seguinte relação:
+\[
+    [T]_\C = M^{-1} [T]_\B M
+\]
+}}
+
+\begin{thebibliography}{1}
+  \bibitem{hoffman} K. Hoffman, R. Kunze (1971), \textit{Linear Algebra} (2nd ed.), Englewood Cliffs: Prentice Hall
+  
+\end{thebibliography}
+
+\end{document}
