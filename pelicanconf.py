@@ -11,6 +11,8 @@ THEME = join(dirname(__file__), 'theme')
 
 PATH = 'content'
 
+STATIC_PATHS = ['assets']
+
 TIMEZONE = 'America/Sao_Paulo'
 
 DEFAULT_LANG = 'pt'
