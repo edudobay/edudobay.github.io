@@ -1,8 +1,5 @@
 .. role:: icon
 
-.. role:: item-meta
-   :class: item-meta
-
 Eduardo Sangiorgio Dobay
 ########################
 
@@ -17,7 +14,7 @@ Computação
 
 * `Guia de programação em C <{filename}/assets/articles/c.pdf>`_
   :icon:`pdf`
-  :item-meta:`06/08/2011 (incompleto, sob constante mutação — **sugestões são bem-vindas!**)`
+  :item-meta:`06/08/2011 (incompleto, sob constante mutação)`
 
 * `Trabalhando com arquivos em C <{filename}/assets/articles/arquivos.pdf>`_
   :icon:`pdf`

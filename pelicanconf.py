@@ -11,6 +11,10 @@ THEME = join(dirname(__file__), 'theme')
 
 PATH = 'content'
 
+PLUGINS = [
+    'app.plugins.rst_directives'
+]
+
 STATIC_PATHS = ['assets']
 
 TIMEZONE = 'America/Sao_Paulo'
