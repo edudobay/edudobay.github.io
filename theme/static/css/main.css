@@ -9,3 +9,6 @@
 @import url(./blogPostTitle.css);
 @import url(./blogPostMeta.css);
 @import url(./blogPostContent.css);
+
+@import url(./highlight.css);
+@import url(./pygments.css);
