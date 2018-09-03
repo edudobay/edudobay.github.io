@@ -1,28 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-<section id="content">
+<section class="blogArchive">
 {% block content_title %}
-<h2>All articles</h2>
+<h2 class="blogArchive__title">All articles</h2>
 {% endblock %}
 
-<ol id="post-list">
+<section class="blogArchiveArticles">
 {% for article in articles_page.object_list %}
-        <li><article class="hentry">
-                <header> <h2 class="entry-title"><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a></h2> </header>
-                <footer class="post-info">
-                    <time class="published" datetime="{{ article.date.isoformat() }}"> {{ article.locale_date }} </time>
-                    <address class="vcard author">By
-                    {% for author in article.authors %}
-                        <a class="url fn" href="{{ SITEURL }}/{{ author.url }}">{{ author }}</a>
-                    {% endfor %}
-                    </address>
-                </footer><!-- /.post-info -->
-                <div class="entry-content"> {{ article.summary }} </div><!-- /.entry-content -->
-        </article></li>
+  <article class="blogPost">
+    <header class="blogPostTitle">
+      <h2 class="blogPostTitle__text">
+        <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags|e }}">{{ article.title|striptags|e }}</a></h2>
+    </header>
+    <footer class="blogPostMeta">
+      <div class="blogPostMeta__taxonomy">
+        <div class="blogPostMeta__category">
+          <span class="blogPostMeta__categoryLabel">Categoria</span>
+          <span class="blogPostMeta__categoryValue">
+            <a href="{{ article.category.url|e }}">{{ article.category|e }}</a>
+          </span>
+        </div>
+        {% if article.tags %}
+        <div class="blogPostMeta__tags">
+          <span class="blogPostMeta__tagsLabel">Tags</span>
+          <div class="blogPostMeta__tagList">
+            {% for tag in article.tags %}
+            <span class="blogPostMeta__tagValue"><a href="{{ tag.url|e }}">{{ tag.name|e }}</a></span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <time class="blogPostMeta__timePublished" datetime="{{ article.date.isoformat() }}">
+        {{ article.locale_date }}
+      </time>
+    </footer>
+    <section class="blogPostContent">
+      {{ article.summary }}
+    </section>
+  </article>
 {% endfor %}
-</ol><!-- /#posts-list -->
+</section><!-- .blogArchiveArticles -->
 {% if articles_page.has_other_pages() %}
     {% include 'pagination.html' %}
 {% endif %}
-</section><!-- /#content -->
+</section><!-- .blogArchive -->
 {% endblock content %}
