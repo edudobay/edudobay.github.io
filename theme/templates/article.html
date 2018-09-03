@@ -17,7 +17,7 @@
 
   <header class="blogPostTitle">
     <h2 class="blogPostTitle__text">
-      <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">{{ article.title|striptags }}</a></h2>
+      <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags|e }}">{{ article.title|striptags|e }}</a></h2>
 {% import 'translations.html' as translations with context %}
 {{ translations.translations_for(article) }}
   </header>
