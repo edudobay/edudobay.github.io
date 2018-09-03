@@ -3,7 +3,7 @@ layout: post
 title:  Segmentation fault no Bash
 date:   2010-02-12 23:24:44 +0000
 categories: programming
-tags:   bash shell
+tags:   bash, shell
 ---
 Troquei o Ubuntu pelo ArchLinux, salvando toda minha pasta home para continuar usando no novo sistema. Instalei tudo direitinho, criei um usuário e, quando fui substituir a home dele pela antiga, o usuário não logava. Não dava pra ver nenhum erro porque ele limpava a tela e voltava pro login após o erro; entrei como root e fui logar via `su`. O resultado: *segmentation fault*. Mas que diabos? Não imaginava nada que pudesse causar isso. Então deixei a pasta vazia e fui copiando as coisas aos poucos.
 
