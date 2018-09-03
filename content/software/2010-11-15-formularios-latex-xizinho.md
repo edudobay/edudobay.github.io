@@ -47,7 +47,7 @@ Vamos juntar tudo isso e criar um comando personalizado. Vou deixar a largura co
 
     :::tex
     \newbox{\crossbox}
-    \newcommand{\cross}[1][1em]{{ "{%" }}
+    \newcommand{\cross}[1][1em]{%
       \sbox{\crossbox}{(}%
       \begin{tikzpicture}[baseline=0pt]
       \useasboundingbox (0,-\dp\crossbox) rectangle (#1,\ht\crossbox);
