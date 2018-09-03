@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  font-family: 'PT Serif', 'Source Serif Pro', 'Roboto Slab', serif;
+  background-color: #fff;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'IBM Plex Mono', 'Roboto Mono', monospace;
+  font-weight: bold;
+  margin: 0;
+}
+
+pre, code, tt, samp, kbd {
+  font-family: 'IBM Plex Mono', 'Roboto Mono', monospace;
+  color: #333;
+}

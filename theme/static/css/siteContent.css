@@ -1,0 +1,14 @@
+.siteContent {
+}
+
+.siteContent__main {
+  max-width: 960px;
+  padding: 20px 20px;
+  margin: 0 auto;
+}
+
+@media(min-width: 480px) {
+  .siteContent__main {
+    padding: 20px 40px;
+  }
+}

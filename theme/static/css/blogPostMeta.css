@@ -1,0 +1,61 @@
+.blogPostMeta {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  padding-top: 4px;
+}
+
+.blogPostMeta__timePublished {
+  display: block;
+}
+
+.blogPostMeta__taxonomy {
+  display: flex;
+  align-items: baseline;
+  vertical-align: baseline;
+}
+
+.blogPostMeta__categoryLabel,
+.blogPostMeta__tagsLabel {
+  display: none;
+}
+
+.blogPostMeta__categoryValue {
+  font-weight: bold;
+  color: #000;
+}
+
+.blogPostMeta__categoryValue a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.blogPostMeta__category:hover a {
+  text-decoration: underline;
+}
+
+.blogPostMeta__tagList {
+  display: flex;
+  align-items: baseline;
+  vertical-align: baseline;
+}
+
+.blogPostMeta__tagValue::before {
+  content: '#';
+  margin-right: 4px;
+}
+
+.blogPostMeta__tagValue {
+  display: block;
+  margin-left: 12px;
+  color: #666;
+  text-decoration: none;
+}
+
+.blogPostMeta__tagValue a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.blogPostMeta__tagValue:hover a {
+  text-decoration: underline;
+}
