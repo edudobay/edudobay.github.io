@@ -13,9 +13,8 @@ Para isso, vou usar o pacote `tikz`, que permite que você faça desenhos e diag
 
 A lacuna não preenchida é fácil: basta colocar um comando de espaçamento entre os parênteses — eu escolhi o comando `\quad`, que gera um espaçamento de `1em` (é uma unidade que corresponde aproximadamente à largura de um M maiúsculo na fonte atual), mas poderíamos usar qualquer outra largura, com o comando `\hspace`{*largura*}.
 
-{% highlight tex %}
-(\quad)
-{% endhighlight %}
+    :::tex
+    (\quad)
 
 Como o objetivo é alinhar o X com os parênteses, precisamos conhecer as dimensões dos parênteses (imagino que em geral o par seja simétrico, então só precisamos medir um deles). Devemos levar em conta que, com relação à linha de base do texto (a “pauta” virtual que o computador usa para alinhar os caracteres), cada caractere pode estender-se para cima e/ou para baixo. Em LaTeX (e em tipografia em geral), chamamos os comprimentos acima e abaixo da linha de base, respectivamente, de **altura** e **profundidade**, conforme o diagrama abaixo:
 
@@ -23,21 +22,20 @@ Como o objetivo é alinhar o X com os parênteses, precisamos conhecer as dimens
 
 Para medir a altura e a profundidade do caractere, vamos olhar para a sua caixa delimitadora, ou seja, o menor retângulo que consegue englobar o caractere todo (sombreado em azul claro na figura). Em LaTeX, podemos criar uma caixa (virtual, que não sai no documento) com o comando `\newbox`, e depois colocamos dentro dela um caractere (ou qualquer porção de texto) com o comando `\sbox`:
 
-{% highlight tex %}
-\newbox{\crossbox}% cria o comando para conter a caixa
-\sbox{\crossbox}{(}% coloco na caixa o parêntese esquerdo
-{% endhighlight %}
+    :::tex
+    \newbox{\crossbox}% cria o comando para conter a caixa
+    \sbox{\crossbox}{(}% coloco na caixa o parêntese esquerdo
+
 
 (`\crossbox` é o nome da caixa.) Para descobrir as dimensões da caixa, usamos os comandos (do TeX) `\ht` (*height*) e `\dp` (*depth*). O desenho do X será feito assim:
 
-{% highlight tex %}
-  \begin{tikzpicture}[baseline=0pt]
-  \useasboundingbox (0, -\dp\crossbox) rectangle (1em, \ht\crossbox);
-  \draw[line width=0.6pt]
-    (0, -\dp\crossbox) -- (1em, \ht\crossbox)
-    (1em, -\dp\crossbox) -- (0, \ht\crossbox);%
-  \end{tikzpicture}
-{% endhighlight %}
+    :::tex
+    \begin{tikzpicture}[baseline=0pt]
+    \useasboundingbox (0, -\dp\crossbox) rectangle (1em, \ht\crossbox);
+    \draw[line width=0.6pt]
+      (0, -\dp\crossbox) -- (1em, \ht\crossbox)
+      (1em, -\dp\crossbox) -- (0, \ht\crossbox);%
+    \end{tikzpicture}
 
 Vou explicar os detalhes:
 
@@ -47,18 +45,17 @@ Vou explicar os detalhes:
 
 Vamos juntar tudo isso e criar um comando personalizado. Vou deixar a largura como um parâmetro ajustável (que pode ser acessado usando o código `#1`), cujo valor padrão é de `1em`.
 
-{% highlight tex %}
-\newbox{\crossbox}
-\newcommand{\cross}[1][1em]{{ "{%" }}
-  \sbox{\crossbox}{(}%
-  \begin{tikzpicture}[baseline=0pt]
-  \useasboundingbox (0,-\dp\crossbox) rectangle (#1,\ht\crossbox);
-  \draw[line width=0.6pt]
-    (0,-\dp\crossbox) -- (#1,\ht\crossbox)
-    (#1,-\dp\crossbox) -- (0,\ht\crossbox);
-  \end{tikzpicture}%
+    :::tex
+    \newbox{\crossbox}
+    \newcommand{\cross}[1][1em]{{ "{%" }}
+      \sbox{\crossbox}{(}%
+      \begin{tikzpicture}[baseline=0pt]
+      \useasboundingbox (0,-\dp\crossbox) rectangle (#1,\ht\crossbox);
+      \draw[line width=0.6pt]
+        (0,-\dp\crossbox) -- (#1,\ht\crossbox)
+        (#1,-\dp\crossbox) -- (0,\ht\crossbox);
+      \end{tikzpicture}%
 }
-{% endhighlight %}
 
 Note que eu criei a caixa *antes* da definição do comando. Se eu a criasse *dentro* do comando, o LaTeX iria reclamar se você usasse o comando mais de uma vez, pois você estaria tentando criar uma caixa já existente.
 
@@ -66,7 +63,6 @@ Perceba também que eu coloquei vários símbolos de comentário (`%`) no final 
 
 Para chamar esse comando, basta usar a sintaxe `\cross`, ou `\cross[largura]` caso queira uma largura diferente de `1em`. O exemplo no começo desse post foi produzido com o seguinte código:
 
-{% highlight tex %}
-(\quad) Sim \\
-(\cross) Não
-{% endhighlight %}
+    :::tex
+    (\quad) Sim \\
+    (\cross) Não
