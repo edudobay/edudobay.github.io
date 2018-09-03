@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Formulários para preencher em LaTeX – Parte 1: o “xizinho”"
+title:  Formulários para preencher em LaTeX – Parte 1: o “xizinho”
 date:   2010-11-15 14:45:22 +0000
 categories: programming
 tags:   latex

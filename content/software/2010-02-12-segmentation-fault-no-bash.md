@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Segmentation fault no Bash"
+title:  Segmentation fault no Bash
 date:   2010-02-12 23:24:44 +0000
 categories: programming
 tags:   bash shell

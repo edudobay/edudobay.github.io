@@ -1,6 +1,6 @@
 ---
 layout: single
-title:  "Haskell pattern matching and variable binding"
+title:  Haskell pattern matching and variable binding
 date:   2015-12-30 23:15:00 -0200
 categories: programming
 tags:   haskell
