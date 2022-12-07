@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Anagramas</title>
+  <style type="text/css">
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Open Sans', sans-serif;
+}
+
+main {
+  padding: 1em;
+}
+
+input, textarea {
+  font-family: inherit;
+  font-size: 120%;
+  padding: 0.75rem 1rem;
+  line-height: 1.6;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px #7ec7f0;
+}
+
+#spare {
+  background-color: #f5f5f5;
+  min-height: 2em;
+  line-height: 2em;
+  padding: 8px;
+  font-size: 150%;
+}
+
+#spare > span {
+  padding: 4px 10px;
+  margin-right: 6px;
+}
+
+#spare span.ok {
+  background-color: #d5d5d5;
+}
+
+#spare span.ok .count {
+  color: #dd00aa;
+  margin-left: 0.5em;
+  margin-right: -0.35em;
+  vertical-align: sub;
+  font-size: 50%;
+}
+
+#spare span.error {
+  background-color: #ffcccc;
+  font-weight: bold;
+}
+
+#spare.ok {
+  background-color: #4d5;
+}
+
+#spare.error {
+  background-color: #d45;
+}
+
+</style>
+<script type="text/javascript">
+
+var original, spare, entry;
+var availableLetters = [];
+var compact = false;
+var filter = /[ \t\n.,!?'"-]/g;
+
+function $(x)
+{
+  return document.getElementById(x);
+}
+
+function updateOriginal(evt)
+{
+  availableLetters = original.value.replace(filter, "").toLowerCase().split("").sort();
+}
+
+function toggleCompact(evt)
+{
+  compact = !compact;
+  updateLetters();
+}
+
+Array.prototype.copy = function()
+{
+  var a = new Array(this.length);
+  for (var i = 0; i < this.length; i++)
+    a[i] = this[i];
+  return a;
+} 
+
+function newSpan(text, cl, cnt)
+{
+  var span = document.createElement('span');
+  var n = document.createTextNode(text);
+  span.appendChild(n);
+  span.className = cl;
+
+  if (cnt && cnt > 1) {
+    var cntSpan = document.createElement('span');
+    cntSpan.appendChild(document.createTextNode(cnt.toString()));
+    cntSpan.className = 'count';
+    span.appendChild(cntSpan);
+  }
+  return span;
+}
+
+function clearChildren(e)
+{
+  while (e.firstChild)
+    e.removeChild(e.firstChild);
+}
+
+function dict()
+{
+  return {
+    keys: [],
+    values: [],
+
+    keyIndex: function(k) {
+      for (var i = 0; i < this.keys.length; i++)
+        if (this.keys[i] == k)
+          return i;
+      return -1;
+    },
+
+    hasKey: function(k) {
+      return (this.keyIndex(k) != -1);
+    },
+
+    set: function(k, v) {
+      var i;
+      if ((i = this.keyIndex(k)) != -1)
+        this.values[i] = v;
+      else {
+        this.keys.append(k);
+        this.values.append(v);
+      }
+    },
+
+    get: function(k, v, d) {
+      var i;
+      if ((i = this.keyIndex(k)) != -1)
+        return this.values[i];
+      else
+        return d;
+    },
+
+  };
+}
+
+function updateLetters(evt)
+{
+  if (evt && evt.altKey && !evt.ctrlKey && evt.keyCode == 75 /* K */) {
+    toggleCompact();
+    $('compact_check').checked = compact;
+    return;
+  }
+
+  var usedLetters = entry.value.replace(filter, "").toLowerCase().split("").sort();
+  var invalid = [];
+  var unused = {
+    letters: new Object,
+    length: 0,
+    add: function(k) {
+      if (this.letters[k])
+        this.letters[k]++;
+      else {
+        this.length++;
+        this.letters[k] = 1;
+      }
+    }
+  };
+  var i, j;
+
+  for (i = 0, j = 0; i < usedLetters.length; i++) {
+
+    for (; j < availableLetters.length && availableLetters[j] < usedLetters[i]; j++)
+      unused.add(availableLetters[j]);
+
+    if (j >= availableLetters.length || availableLetters[j] > usedLetters[i])
+      invalid.push(usedLetters[i]);
+
+    else {
+      j++;
+    }
+  }
+
+  for (; j < availableLetters.length; j++)
+    unused.add(availableLetters[j]);
+
+  clearChildren(spare);
+
+  if (unused.length == 0 && invalid.length == 0 && availableLetters.length != 0)
+    spare.className = 'ok';
+  else if (invalid.length != 0)
+    spare.className = 'error';
+  else
+    spare.className = '';
+
+  for (var letter in unused.letters) {
+    var cnt = unused.letters[letter];
+    if (compact) {
+      spare.appendChild(newSpan(letter, 'ok', cnt));
+      spare.appendChild(document.createTextNode(' '));
+    } else {
+      for (i = 0; i < cnt; i++) {
+        spare.appendChild(newSpan(letter, 'ok'));
+        spare.appendChild(document.createTextNode(' '));
+      }
+    }
+  }
+  for (i = 0; i < invalid.length; i++) {
+    spare.appendChild(newSpan(invalid[i], 'error'));
+    spare.appendChild(document.createTextNode(' '));
+  }
+}
+
+function init(evt)
+{
+  original = $('original');
+  spare = $('spare');
+  entry = $('entry');
+
+  entry.addEventListener('keyup', updateLetters, false);
+  original.addEventListener('keyup', updateOriginal, false);
+  $('compact_check').addEventListener('click', toggleCompact, false);
+  
+
+  updateOriginal(null);
+}
+
+window.addEventListener('load', init, true);
+
+  </script>
+</head>
+
+<body>
+  <main>
+
+  <p>Texto original:<br>
+    <input type="text" id="original" size="50">
+
+  <p>Letras restantes:</p>
+  <div id="spare"></div>
+
+  <p><input type="checkbox" id="compact_check" accesskey="k"><label for="compact_check">Formato compacto</label>
+
+  <p>Anagrama:<br>
+  <textarea rows="3" cols="50" id="entry"></textarea></p>
+
+  </main>
+</body>
+</html>
+<!-- vim:set sw=2 et sta ai: -->
