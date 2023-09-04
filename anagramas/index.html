@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Anagramas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style type="text/css">
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Open Sans', sans-serif;
 }
@@ -20,6 +25,10 @@ input, textarea {
   background-color: white;
   border-radius: 8px;
   border: 1px solid #dee2e6;
+}
+
+.input--full {
+  width: 100%;
 }
 
 :focus {
@@ -247,7 +256,7 @@ window.addEventListener('load', init, true);
   <main>
 
   <p>Texto original:<br>
-    <input type="text" id="original" size="50">
+    <input type="text" id="original" size="50" class="input--full">
 
   <p>Letras restantes:</p>
   <div id="spare"></div>
@@ -255,7 +264,7 @@ window.addEventListener('load', init, true);
   <p><input type="checkbox" id="compact_check" accesskey="k"><label for="compact_check">Formato compacto</label>
 
   <p>Anagrama:<br>
-  <textarea rows="3" cols="50" id="entry"></textarea></p>
+  <textarea rows="3" cols="50" id="entry" class="input--full"></textarea></p>
 
   </main>
 </body>
