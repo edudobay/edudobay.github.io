@@ -123,6 +123,11 @@ img {
   color: #666;
 }
 
+.file-type {
+   color: #b74;
+   margin-left: 0.2em;
+}
+
 @media screen and (max-width: 480px) {
 
 #myinfo {
