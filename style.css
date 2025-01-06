@@ -13,16 +13,28 @@ body {
    font-family: 'Open Sans', sans-serif;
 }
 
+h1, h2, h3, h4, h5, h6 {
+   font-family: 'Raleway', serif;
+   font-weight: 700;
+}
+
 h1 {
    color: white;
    text-align: right;
    margin: 0 190px 0 0;
    padding: 0.5em;
-   font: normal 150% 'Fauna One', serif;
+   font-size: 150%;
 }
 
-#content { }
+h2 {
+   margin: 1.5em 0 1em;
+   padding: 0.3em 0;
+   font-size: 140%;
+   color: #b40;
+   border-top: solid 1px #b40;
+}
 
+#main h2,
 #main h3,
 #main p,
 #main .figure,
@@ -32,6 +44,7 @@ h1 {
 
 #content h2:first-child {
    margin-top: 0;
+   border-top: none;
 }
 
 #main {
@@ -48,15 +61,13 @@ h1 {
 
 #myinfo {
    margin-top: 48px;
-   color: #333;
-   font-size: 80%;
-   font-family: 'Roboto', sans-serif;
+   color: black;
    float: right;
 }
 
 #myinfo #info-header {
-   background-color: #32e54a;
-   color: #226622;
+   background-color: #557755;
+   color: white;
    font-weight: bold;
    text-transform: uppercase;
    padding: 10px;
@@ -75,8 +86,8 @@ h1 {
    margin-top: 0.25em;
 }
 
-#myinfo a { color: #666; }
-#myinfo a:hover { color: #333; }
+#myinfo a { color: #333; }
+#myinfo a:hover { color: #000; background-color: #8b8; }
 
 #myinfo .info-left {
    float: left;
@@ -92,20 +103,6 @@ h1 {
 
 .clear {
    clear: both;
-}
-
-h2 {
-   margin: 1.5em 0 1em;
-   padding: 0 30px 2px 0;
-   background: url(imagens/header_bullet.png) bottom right no-repeat;
-   border-bottom: 1px solid #ff6600;
-   color: #ff6600;
-   font-family: 'Fauna One', serif;
-   font-size: 140%;
-}
-
-h3 {
-   font-family: 'Raleway', serif;
 }
 
 li {
@@ -127,10 +124,6 @@ img {
 }
 
 @media screen and (max-width: 480px) {
-
-h1 {
-   margin: 0;
-}
 
 #myinfo {
    float: none;
