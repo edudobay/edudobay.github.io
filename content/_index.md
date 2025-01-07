@@ -4,7 +4,7 @@ type = 'home_v1'
     main_title = "Eduardo Sangiorgio Dobay"
 +++
 
-## Textos
+## Textos científicos e acadêmicos
 
 Abaixo você encontra alguns textos que escrevi; alguns ainda não estão completos ou concluídos. Qualquer feedback é bem-vindo! (Veja informações de contato ao lado.)
 
@@ -55,7 +55,7 @@ Abaixo você encontra alguns textos que escrevi; alguns ainda não estão comple
 ## [Literatura](/literatura/)
 
 
-## Programas
+## Software
 
 - Minha versão do jogo **[Tetris](https://github.com/edudobay/tetris-cpp-gtk2/blob/main/README.pt-br.md)**.
 
