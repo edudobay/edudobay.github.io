@@ -1,0 +1,4 @@
+{{ $type := index .Params 0 }}
+{{ if eq $type "pdf" }}
+<i class="fa-regular fa-file-pdf file-type" title="Arquivo PDF"></i>
+{{ end }}

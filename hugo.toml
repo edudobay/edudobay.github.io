@@ -1,0 +1,15 @@
+baseURL = 'https://edudobay.github.io/'
+languageCode = 'pt-br'
+title = 'Eduardo Dobay'
+theme = ['github.com/tomfran/typo']
+
+[module]
+    [[module.mounts]]
+        source = "static"
+        target = "static"
+    [[module.mounts]]
+        source = "assets/home-v1/img"
+        target = "static/home-v1/img"
+
+[markup.goldmark.renderer]
+    unsafe = true

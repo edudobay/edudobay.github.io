@@ -1,0 +1,4 @@
+# generated - published website
+/public/
+# cache from Hugo asset pipelines
+/resources/

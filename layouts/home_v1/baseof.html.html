@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ block "title" . }}
+      {{ .Site.Title }}
+    {{ end }}</title>
+    {{ $style := resources.Get "home-v1/main.scss" | css.Sass | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.Permalink }}">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:700|Open+Sans:400italic,400,700" rel="stylesheet" type="text/css">
+    <script src="https://kit.fontawesome.com/0ea2c6beed.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    {{ block "header" . }}
+      <h1>{{ .Param "main_title" }}</h1>
+    {{ end }}
+
+    <div class="content">
+      {{ partial "home/contact.html" . }}
+
+      <main class="main">
+      {{ block "main" . }}
+      {{ end }}
+      </main>
+
+    </div>
+  </body>
+</html>
