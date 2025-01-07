@@ -52,6 +52,9 @@ Abaixo você encontra alguns textos que escrevi; alguns ainda não estão comple
     <span class="item-meta">14/10/2010</span>
 
 
+## [Literatura](/literatura/)
+
+
 ## Programas
 
 - Minha versão do jogo **[Tetris](https://github.com/edudobay/tetris-cpp-gtk2/blob/main/README.pt-br.md)**.
